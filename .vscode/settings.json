@@ -4,5 +4,5 @@
         "editor.formatOnPaste": true,
         "editor.formatOnSave": true,
     },
-    "python.pythonPath": "/home/ohya/.pyenv/versions/3.8.1/bin/python"
+    "python.pythonPath": "/home/ohya/.pyenv/versions/3.8.0/bin/python"
 }

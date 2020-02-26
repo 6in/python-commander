@@ -8,9 +8,9 @@ class SampleCommand(CommandBase):
         pass
 
     def init(self, context: CommandContext):
-        self.__args = context.get_args()
-        spec = context.get_argspec()
-        for x in spec["arguments"]:
+        self.__args = context.get_parameters()
+        spec = context.get_parameterspec()
+        for x in spec["parameters"]:
             print(x)
 
     def proc(self, context: CommandContext):

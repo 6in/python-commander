@@ -1,0 +1,19 @@
+parameters:
+  script: サンプルスクリプト
+
+
+commands:
+  - type: echo
+    comment: サンプル１
+    parameters:
+      targets:
+        - p1
+        - p2
+        - p4
+  - type: echo
+    comment: サンプル２
+    parameters:
+      targets:
+        - p1
+        - p2
+        - p4

@@ -14,11 +14,11 @@ def main():
         command = factory.new_instance(command_name)
 
         # コマンド引数の仕様を設定
-        context.set_argspec(
+        context.set_parameterspec(
             factory.get_command_arg_spec(command_name))
 
         # コマンド引数を設定
-        context.set_args({
+        context.set_parameters({
             'p1': 'abc',
             'p2': 123,
             'p3': True,

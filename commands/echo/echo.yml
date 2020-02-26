@@ -1,6 +1,6 @@
 name: Echo
 description: 指定した列名を画面に表示する
-arguments:
+parameters:
   targets:
     type: list
     comment: 列名を配列で指定する

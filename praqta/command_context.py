@@ -1,4 +1,4 @@
-import typing
+from typing import *
 
 
 class CommandContext(object):
@@ -16,25 +16,25 @@ class CommandContext(object):
     def get_step(self) -> int:
         return self.__step
 
-    def set_args(self, args: dict):
+    def set_parameters(self, args: dict):
         self.__args = args
         return self
 
-    def get_args(self) -> dict:
+    def get_parameters(self) -> dict:
         return self.__args
 
-    def set_argspec(self, spec: dict):
+    def set_parameterspec(self, spec: dict):
         self.__argspec = spec
         return self
 
-    def get_argspec(self) -> dict:
+    def get_parameterspec(self) -> dict:
         return self.__argspec
 
-    def set_rows(self, rows: list):
+    def set_rows(self, rows: Iterable):
         self.__rows = rows
         return self
 
-    def get_rows(self) -> list:
+    def get_rows(self) -> Iterable:
         return self.__rows
 
     def get_services(self) -> list:

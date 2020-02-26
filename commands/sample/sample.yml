@@ -1,6 +1,6 @@
 name: Sample
 description: サンプルコマンド
-arguments:
+parameters:
   param1:
     type: str
     comment: パラメータ1

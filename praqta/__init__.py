@@ -28,3 +28,11 @@ class CommandBase(metaclass=ABCMeta):
     @abstractmethod
     def term(self, context: CommandContext):
         pass
+
+
+class ApplicationContext(object):
+    def __init__(self):
+        pass
+
+    def get_config(self, section: str) -> dict:
+        return {}

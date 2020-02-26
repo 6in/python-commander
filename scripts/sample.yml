@@ -1,17 +1,25 @@
 parameters:
   script: サンプルスクリプト
 
-
 commands:
-  - type: echo
-    comment: サンプル１
+  - type: sample
+    comment: サンプルデータを返却
     parameters:
       targets:
         - p1
         - p2
         - p4
+
   - type: echo
-    comment: サンプル２
+    comment: エコーサンプル１
+    parameters:
+      targets:
+        - p1
+        - p2
+        - p4
+
+  - type: echo
+    comment: エコーサンプル２
     parameters:
       targets:
         - p1

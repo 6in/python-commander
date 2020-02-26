@@ -1,13 +1,14 @@
 name: Sample
-description: サンプルコマンド
+comment: サンプルコマンド
 parameters:
-  param1:
-    type: str
-    comment: パラメータ1
-    require: true
-    default: abc
-  param2:
-    type: int
-    comment: パラメータ2
-    require: true
-    default: 123
+  []
+  # param1:
+  #   type: str
+  #   comment: パラメータ1
+  #   require: true
+  #   default: abc
+  # param2:
+  #   type: int
+  #   comment: パラメータ2
+  #   require: true
+  #   default: 123

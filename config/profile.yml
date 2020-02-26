@@ -1,0 +1,48 @@
+# アプリケーションの起動設定を行います。
+
+# praqtaサービス
+praqta_service:
+  scripts:
+    - ./scripts
+    - ~/scripts
+
+# HTTPサーバーサービス
+http_service:
+  host: localhost
+  port: 8888
+  https: true
+  key_file: "./config/xxx.pem"
+  static: http/
+  auth:
+    type: basic
+    user: username
+    password: XXXXXXXX
+
+# データベースアクセスサービス
+database_service:
+  default:
+    type: sqlite
+    comment: デフォルト接続
+    conn: connection
+    user: user
+    password: password
+    start: always
+    autoCommit: true
+    initSql: config/ddl.sql
+    pool:
+      min: 2
+      max: 4
+      keep_alive: "select 1"
+
+  postgresql:
+    type: postgresql
+    comment: PostgreSQLへの接続
+    conn: connection
+    user: user
+    password: password
+    autoCommit: true
+    start: lazy
+    pool:
+      min: 2
+      max: 4
+      keep_alive: "select 1"

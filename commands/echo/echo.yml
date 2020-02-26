@@ -1,5 +1,5 @@
 name: Echo
-description: 指定した列名を画面に表示する
+comment: 指定した列名を画面に表示する
 parameters:
   targets:
     type: list

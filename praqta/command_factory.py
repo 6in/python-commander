@@ -18,7 +18,7 @@ class ModuleInfo(object):
     def load_spec(self):
         # Yamlファイルをロード
         (path, _) = os.path.splitext(self.__file)
-        with open(path + '.yml', 'r') as f:
+        with open(f'{path}.yml', 'r') as f:
             self.__spec = yaml.load(f)
             print(self.__spec)
             # todo: json schemaによるspecのチェック
@@ -32,17 +32,24 @@ class ModuleInfo(object):
     def get_module(self):
         return self.__module
 
+    def reload(self):
+        importlib.reload(self.__module)
+        return self
+
+    def new_instance(self):
+        return self.__module.new_instance()
+
 
 # モジュールのキャッシュ
-__command_module_cache = {}
+__moduleInfoCache = {}
 
 
 def get_command_arg_spec(command_name: str) -> dict:
     """
     コマンドの引数の仕様を返却
     """
-    key = f'commands.{command_name}.{command_name}'
-    return __command_module_cache[key].get_spec()
+    packageName = f'commands.{command_name}.{command_name}'
+    return __moduleInfoCache[packageName].get_spec()
 
 
 def new_instance(command_name: str) -> CommandBase:
@@ -58,21 +65,21 @@ def new_instance(command_name: str) -> CommandBase:
     -------
     commandInstance : CommandBase
     """
-    key = f'commands.{command_name}.{command_name}'
+    packageName = f'commands.{command_name}.{command_name}'
     need_load = True
-    if key in __command_module_cache:
+    if packageName in __moduleInfoCache:
         # キャッシュからモジュールを取得
-        module = __command_module_cache[key]
+        moduleInfo = __moduleInfoCache[packageName]
         need_load = False
         # モジュールのタイムスタンプが新しくなっていたら、モジュール再ロード
-        if module.is_updated():
-            need_load = True
+        if moduleInfo.is_updated():
+            moduleInfo.reload()
 
     if need_load:
         # モジュールを動的にロード
-        module = ModuleInfo(command_name,
-                            importlib.import_module(key))
+        moduleInfo = ModuleInfo(command_name,
+                                importlib.import_module(packageName))
         # キャッシュに格納
-        __command_module_cache[key] = module
+        __moduleInfoCache[packageName] = moduleInfo
 
-    return module.get_module().new_instance()
+    return moduleInfo.new_instance()

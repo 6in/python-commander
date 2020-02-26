@@ -1,5 +1,4 @@
-from commands.command_base import CommandBase
-import commands.sample.command
+from praqta import CommandBase
 import importlib
 import os
 import os.path
@@ -12,12 +11,20 @@ class ModuleInfo(object):
 
     def __init__(self, name, module):
         self.__module = module
-        file = module.__file__
-        (path, _) = os.path.splitext(file)
+        self.__file = module.__file__
+        self.__timestamp = os.stat(self.__file).st_mtime
+        self.load_spec()
+
+    def load_spec(self):
+        # Yamlファイルをロード
+        (path, _) = os.path.splitext(self.__file)
         with open(path + '.yml', 'r') as f:
             self.__spec = yaml.load(f)
-        self.__file = file
-        self.__timestamp = os.stat(self.__file).st_mtime
+            print(self.__spec)
+            # todo: json schemaによるspecのチェック
+
+    def get_spec(self) -> dict:
+        return self.__spec
 
     def is_updated(self):
         return os.stat(self.__file).st_mtime > self.__timestamp
@@ -30,7 +37,15 @@ class ModuleInfo(object):
 __command_module_cache = {}
 
 
-def create_command(command_name: str) -> CommandBase:
+def get_command_arg_spec(command_name: str) -> dict:
+    """
+    コマンドの引数の仕様を返却
+    """
+    key = f'commands.{command_name}.{command_name}'
+    return __command_module_cache[key].get_spec()
+
+
+def new_instance(command_name: str) -> CommandBase:
     """
     コマンドのインスタンスを返却します
 
@@ -43,7 +58,7 @@ def create_command(command_name: str) -> CommandBase:
     -------
     commandInstance : CommandBase
     """
-    key = f'commands.{command_name}.command'
+    key = f'commands.{command_name}.{command_name}'
     need_load = True
     if key in __command_module_cache:
         # キャッシュからモジュールを取得
@@ -60,4 +75,4 @@ def create_command(command_name: str) -> CommandBase:
         # キャッシュに格納
         __command_module_cache[key] = module
 
-    return module.get_module() .new_instance()
+    return module.get_module().new_instance()

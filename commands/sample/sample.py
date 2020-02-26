@@ -1,9 +1,9 @@
 import typing
-from commands.command_base import CommandBase
+from praqta import CommandBase
 from praqta.command_context import CommandContext
 
 
-class SampleCommand(CommandBase):
+class Command(CommandBase):
     def __init__(self):
         pass
 
@@ -12,7 +12,7 @@ class SampleCommand(CommandBase):
         pass
 
     def proc(self, context: CommandContext):
-        print(f"proc: step={context.getStep()}")
+        print(f"proc: step={context.get_step()}")
         pass
 
     def term(self, context: CommandContext):
@@ -21,4 +21,4 @@ class SampleCommand(CommandBase):
 
 
 def new_instance() -> CommandBase:
-    return SampleCommand()
+    return Command()

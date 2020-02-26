@@ -1,12 +1,12 @@
 name: Sample
 description: サンプルコマンド
 arguments:
-  - name: param1
+  param1:
     type: str
     comment: パラメータ1
     require: true
     default: abc
-  - name: param2
+  param2:
     type: int
     comment: パラメータ2
     require: true

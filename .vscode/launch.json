@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "praqta-core",
+            "name": "praqta-main",
             "type": "python",
             "request": "launch",
             "program": "${workspaceRoot}/praqta_main.py",

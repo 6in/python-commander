@@ -1,4 +1,4 @@
-## Praqta
+## Python Commander
 
 ### settings
 

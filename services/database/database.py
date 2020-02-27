@@ -11,3 +11,13 @@ class DatabaseService(ServiceBase):
         for config in self.__dbconfig:
             type = config['type']
             print(type)
+
+    def start(self, context: ApplicationContext):
+        pass
+
+    def stop(self, context: ApplicationContext):
+        pass
+
+
+def new_instance() -> ServiceBase:
+    return DatabaseService()

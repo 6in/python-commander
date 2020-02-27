@@ -1,5 +1,6 @@
 import typing
-import praqta.command_factory as factory
+#import praqta.command_factory as factory
+import commands as factory
 from praqta.command_context import CommandContext
 from praqta import Row
 import yaml

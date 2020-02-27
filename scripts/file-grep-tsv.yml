@@ -1,0 +1,97 @@
+parameters:
+  script: サンプルスクリプト
+  search_dir: /search/to/path
+
+commands:
+  - type: file_list
+    comment: ファイル一覧を取得
+    parameters:
+      each: file # 1ファイルずつ
+      search_dir: ${search_dir}
+      filter:
+        white_list:
+          - "*.py"
+        black_list:
+          - "*.pyc"
+      output_keys:
+        - full_path
+        - file_name
+        - ext_name
+        - size
+        - create_datetime
+        - update_datetime
+        - md5
+
+  - type: read_file
+    comment: ファイルを読み込む
+    parameters:
+      path: ${row.full_path}
+      each: lines # １行毎 fileだとファイル丸ごと
+      skip_empty: yes # 空行スキップ
+      target.key: line # 格納先のキー名
+
+  - type: regexp
+    comment: 正規表現でのマッチング
+    parameters:
+      target.key: ${row.line}
+      rules:
+        ruleName1:
+          comment: ルール1
+          regexp: |
+            #def xxx
+            #def yyy
+            (xxx)(yyy)
+          group_names:
+            - key1
+            - key2
+        ruleName2:
+          comment: ルール2
+          regexp: |
+            #def xxx
+            #def zzz
+            (xxx)(zzz)
+          group_names:
+            - key1
+            - key3
+
+  - type: script
+    comment: グルーピング処理
+    parameters:
+      script: |
+        new_rows = []
+        for row in context.get_rows():
+          new_rows.add(row)
+        context.setRows(new_rows)
+
+  - type: write_xsv
+    comment: XSVファイル書き込み
+    parameters:
+      path: ${row.path}
+      mode: create_new
+      type: tsv
+      header: yes
+      keys:
+        - path
+        - line_no
+        - col_pos
+        - rule_name
+        - key1
+        - key2
+        - key3
+
+  - type: write_table
+    comment: テーブル書き込み
+    parameters:
+      create: yes # 実行時に毎回作成する
+      data_source: sample # データソースは、コマンド内で指定する(基本はオートコミット)
+      table_name: output1
+      columns: # カラムの指定( serial/int/text/datetimeの4種類だけ)
+        id: serial
+        path: text
+        line_no: int
+        col_pos: int
+        rule_name: text
+        key1: text
+        key2: text
+        key3: text
+        create_date: datetime

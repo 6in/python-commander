@@ -1,16 +1,17 @@
 import typing
 #import praqta.command_factory as factory
 import commands as factory
-from praqta.command_context import CommandContext
-from praqta import Row
+# from praqta.command_context import CommandContext
+from praqta import Row, CommandContext
 import yaml
 
 
-def main(path: str):
+def main(script_path: str):
     context = CommandContext()
-    commandChain = []
+    commandList = []
 
-    with open(path, 'r') as f:
+    # スクリプトロード
+    with open(script_path, 'r') as f:
         script = yaml.load(f)
         commands = script['commands']
 
@@ -30,15 +31,19 @@ def main(path: str):
         commandInstance.init(context)
 
         # コマンドリストへ追加
-        commandChain.append(commandInstance)
+        commandList.append(commandInstance)
 
-    step = 1
     # コマンド実行処理
-    for commandInstance in commandChain:
-        context.set_step(step)
-        commandInstance.proc(context)
-        step += 1
+    context.set_rows([{"start": True}])
+    while len(context.get_rows()) != 0:
+        step = 1
+        for commandInstance in commandList:
+            context.set_step(step)
+            commandInstance.proc(context)
+            if len(context.get_rows()) == 0:
+                break
+            step += 1
 
-    # コマンド修了処理
-    for commandInstance in commandChain:
+    # コマンド終了処理
+    for commandInstance in commandList:
         commandInstance.term(context)

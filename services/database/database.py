@@ -18,6 +18,9 @@ class DatabaseService(ServiceBase):
     def stop(self, context: ApplicationContext):
         pass
 
+    def open(self, dbname: str):
+        pass
+
 
 def new_instance() -> ServiceBase:
     return DatabaseService()

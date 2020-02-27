@@ -1,6 +1,5 @@
 import typing
-from praqta import CommandBase
-from praqta.command_context import CommandContext
+from praqta import CommandBase, CommandContext
 
 
 class SampleCommand(CommandBase):

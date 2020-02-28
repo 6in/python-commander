@@ -1,9 +1,11 @@
 import typing
-#import praqta.command_factory as factory
 import commands as factory
-# from praqta.command_context import CommandContext
-from praqta import Row, CommandContext
+from praqta.interface import Row, CommandContext
 import yaml
+
+
+def start_services():
+    pass
 
 
 def main(script_path: str):

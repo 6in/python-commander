@@ -1,7 +1,7 @@
 
 
 from .. import ServiceBase
-from praqta import ApplicationContext
+from praqta.interface import ApplicationContext
 
 
 class DatabaseService(ServiceBase):

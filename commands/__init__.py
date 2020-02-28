@@ -1,14 +1,28 @@
-from praqta import CommandBase, ModuleInfo
+from abc import ABCMeta, abstractmethod
+from praqta.interface import ModuleInfo, CommandContext
 import importlib
 import os
 import os.path
+import time
 import typing
 import yaml
-import time
-
 
 # モジュールのキャッシュ
 __moduleInfoCache = {}
+
+
+class CommandBase(metaclass=ABCMeta):
+    @abstractmethod
+    def init(self, context: CommandContext):
+        pass
+
+    @abstractmethod
+    def proc(self, context: CommandContext):
+        pass
+
+    @abstractmethod
+    def term(self, context: CommandContext):
+        pass
 
 
 def get_command_arg_spec(command_name: str) -> dict:

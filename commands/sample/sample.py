@@ -1,5 +1,6 @@
 import typing
-from praqta import CommandBase, Row, CommandContext
+from .. import CommandBase
+from praqta.interface import Row, CommandContext
 
 rows = [
     Row({'p1': 'abc', 'p2': 123, 'p3': True}),

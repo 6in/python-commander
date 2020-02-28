@@ -35,7 +35,7 @@ commands:
     parameters:
       target.key: ${row.line}
       rules:
-        ruleName1:
+        - name: ruleName1
           comment: ルール1
           regexp: |
             #def xxx
@@ -44,7 +44,7 @@ commands:
           group_names:
             - key1
             - key2
-        ruleName2:
+        - name: ruleName2
           comment: ルール2
           regexp: |
             #def xxx

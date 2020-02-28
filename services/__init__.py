@@ -16,7 +16,7 @@ __moduleInstanceCache = {}
 
 class ServiceBase(metaclass=ABCMeta):
     @abstractmethod
-    def init(self, context):
+    def init(self, config):
         pass
 
     @abstractmethod
@@ -26,6 +26,20 @@ class ServiceBase(metaclass=ABCMeta):
     @abstractmethod
     def stop(self, context):
         pass
+
+
+def get_service(service_name: str) -> ServiceBase:
+    if not service_name in __moduleInstanceCache:
+        new_instance(service_name)
+    return __moduleInstanceCache[service_name]
+
+
+def stop_service(service_name: str):
+    serviceInstances = cast(
+        ServiceBase, __moduleInstanceCache[service_name])
+    for serviceInstance in serviceInstances:
+        serviceInstance.stop()
+    __moduleInstanceCache[service_name] = []
 
 
 def new_instance(service_name: str) -> ServiceBase:
@@ -42,22 +56,17 @@ def new_instance(service_name: str) -> ServiceBase:
     serviceInstance : ServiceBase
     """
     packageName = f'services.{service_name}.{service_name}'
-    need_load = True
+
     if packageName in __moduleInfoCache:
         # キャッシュからモジュールを取得
         moduleInfo = __moduleInfoCache[packageName]
-        need_load = False
         # モジュールのタイムスタンプが新しくなっていたら、モジュール再ロード
         if moduleInfo.is_updated():
             # サービスのインスタンスをすべて停止
-            serviceInstances = cast(
-                ServiceBase, __moduleInstanceCache[service_name])
-            for serviceInstance in serviceInstances:
-                serviceInstance.stop()
-            __moduleInstanceCache[service_name] = []
+            stop_service(service_name)
+            # モジュールのリロード
             moduleInfo.reload()
-
-    if need_load:
+    else:
         # モジュールを動的にロード
         moduleInfo = ModuleInfo(service_name,
                                 importlib.import_module(packageName))

@@ -1,51 +1,26 @@
-import typing
-import commands as factory
-from praqta.interface import Row, CommandContext
+from typing import cast
+
+from services.praqta.praqta import main as praqa_main
+import services
 import yaml
 
 
-def start_services():
-    pass
+def read_config(file_path: str) -> dict:
+    with open(file_path, 'r') as f:
+        return yaml.load(f)
 
 
-def main(script_path: str):
-    context = CommandContext()
-    commandList = []
+def main(config_file: str, script_file: str):
 
-    # スクリプトロード
-    with open(script_path, 'r') as f:
-        script = yaml.load(f)
-        commands = script['commands']
+    # プロセス設定ファイルを読み込み
+    config = read_config(config_file)
+    config["parameters"]["script_file"] = script_file
 
-    # スクリプトからコマンド群を順番に生成
-    for command in commands:
-        # コマンド名からコマンドインスタンスを作成
-        commandInstance = factory.new_instance(command['type'])
-
-        # コマンド引数の仕様を設定
-        context.set_parameterspec(
-            factory.get_command_arg_spec(command['type']))
-
-        # コマンド引数を設定
-        context.set_parameters(command['parameters'])
-
-        # コマンドの初期化
-        commandInstance.init(context)
-
-        # コマンドリストへ追加
-        commandList.append(commandInstance)
-
-    # コマンド実行処理
-    context.set_rows([{"start": True}])
-    while len(context.get_rows()) != 0:
-        step = 1
-        for commandInstance in commandList:
-            context.set_step(step)
-            commandInstance.proc(context)
-            if len(context.get_rows()) == 0:
-                break
-            step += 1
-
-    # コマンド終了処理
-    for commandInstance in commandList:
-        commandInstance.term(context)
+    # サービスの起動を行う
+    for service_name in config['services']:
+        # サービスインスタンスを取得
+        service = services.new_instance(service_name)
+        # サービスの初期化を行う
+        service.init(config[f"{service_name}_service"])
+        # サービスの開始
+        service.start(config["parameters"])

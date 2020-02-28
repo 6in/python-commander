@@ -1,3 +1,4 @@
 PyYAML == 5.3
 docopt == 0.6.2
 bottle == 0.12.18
+pandas == 1.0.1

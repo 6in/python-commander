@@ -5,8 +5,9 @@ from praqta.interface import ApplicationContext
 
 
 class HttpService(ServiceBase):
-    def init(self, context: ApplicationContext):
-        self.__config = context.get_config('http')
+    def init(self, config: dict):
+        self.__config = config
+        print(f"HttpService.init({config})")
 
     def start(self, context: ApplicationContext):
         pass

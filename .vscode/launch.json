@@ -9,7 +9,11 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceRoot}/praqta_main.py",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "args": [
+                "-s",
+                "sample.yml"
+            ]
         }
     ]
 }

@@ -1,4 +1,15 @@
+logging:
+  file_name: "/path/to/name"
+  level: DEBUG
+
 # アプリケーションの起動設定を行います。
+parameters:
+  script_file: ""
+
+services:
+  - database
+  - praqta
+  - http
 
 # praqtaサービス
 praqta_service:
@@ -10,10 +21,15 @@ praqta_service:
 http_service:
   host: localhost
   port: 8888
-  https: true
+  https: yes
+  cores: yes
   key_file: "./config/xxx.pem"
-  static: http/
+  static_root: ../html/
+  routes:
+    "/": index
+    "/api/execute/{script_name}": execute_script
   auth:
+    enabled: no
     type: basic
     user: username
     password: XXXXXXXX

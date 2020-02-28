@@ -8,51 +8,74 @@ commands:
     parameters:
       each: file # 1ファイルずつ
       search_dir: ${search_dir}
+      recursive: yes
       filter:
         white_list:
           - "*.py"
         black_list:
           - "*.pyc"
       output_keys:
-        - full_path
-        - file_name
-        - ext_name
-        - size
-        - create_datetime
-        - update_datetime
-        - md5
+        full_path: yes
+        file_namec: yes
+        ext_name: yes
+        size: yes
+        create_datetime: yes
+        update_datetime: yes
+        md5: yes
 
   - type: read_file
     comment: ファイルを読み込む
     parameters:
       path: ${row.full_path}
-      each: lines # １行毎 fileだとファイル丸ごと
+      each: file # １行毎 fileだとファイル丸ごと,lineだと１行ずつ出力
       skip_empty: yes # 空行スキップ
-      target.key: line # 格納先のキー名
+      target.key: lines # 格納先のキー名
+      charset: utf-8
+
+  - type: cut_comment
+    comment: ソースファイル上のコメントをカットし１行ずつ出力
+    parameters:
+      content.key: lines
+      ext.key: ext_name
+      split_line: yes
+      original.key: original_line
+      target.key: comment_cut
 
   - type: regexp
     comment: 正規表現でのマッチング
     parameters:
-      target.key: ${row.line}
+      target.key: line
       rules:
         - name: ruleName1
           comment: ルール1
+          ignore_case: no
           regexp: |
             #def xxx
             #def yyy
             (xxx)(yyy)
           group_names:
+            # グループ番号順に格納するキー名を指定
             - key1
             - key2
         - name: ruleName2
           comment: ルール2
+          ignore_case: no
           regexp: |
             #def xxx
             #def zzz
             (xxx)(zzz)
           group_names:
-            - key1
-            - key3
+            # グループ番号指定の場合
+            1: key1
+            2: key3
+        - name: ruleName3
+          comment: ルール3
+          ignore_case: no
+          regexp: |
+            #def xxx
+            #def zzz
+            (?P<key1>xxx)(?P<key2>zzz)
+          # group_names: グループ指定は、groupdictから取得する(https://note.nkmk.me/python-re-match-object-span-group/)
 
   - type: script
     comment: グルーピング処理

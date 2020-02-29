@@ -8,8 +8,8 @@ parameters:
 
 services:
   - database
-  - praqta
-  - http
+  # - praqta
+  # - http
 
 # praqtaサービス
 praqta_service:
@@ -37,14 +37,15 @@ http_service:
 # データベースアクセスサービス
 database_service:
   default:
-    type: sqlite
+    type: sqlite3
     comment: デフォルト接続
-    conn: connection
-    user: user
-    password: password
+    connect: ./data/default.sqlite3
+    user: 
+    password: 
     start: always
-    autoCommit: true
-    initSql: config/ddl.sql
+    auto_commit: true
+    init_sqls: 
+      - ./data/sql/ddl.sql
     pool:
       min: 2
       max: 4
@@ -53,10 +54,11 @@ database_service:
   postgresql:
     type: postgresql
     comment: PostgreSQLへの接続
-    conn: connection
+    connect: connection
     user: user
     password: password
-    autoCommit: true
+    init_sqls: []
+    auto_commit: true
     start: lazy
     pool:
       min: 2

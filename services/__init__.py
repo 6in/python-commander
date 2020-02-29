@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+from typing import Iterable
 from praqta.interface import ModuleInfo
 import importlib
 import os
@@ -36,9 +37,9 @@ def get_service(service_name: str) -> ServiceBase:
 
 def stop_service(service_name: str):
     serviceInstances = cast(
-        ServiceBase, __moduleInstanceCache[service_name])
+        Iterable[ServiceBase], __moduleInstanceCache[service_name])
     for serviceInstance in serviceInstances:
-        serviceInstance.stop()
+        serviceInstance.stop({})
     __moduleInstanceCache[service_name] = []
 
 

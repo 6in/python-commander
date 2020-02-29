@@ -1,0 +1,1 @@
+ps axww | grep python | grep praqta_main.py | awk '{print "kill " $1}' | sh

@@ -8,8 +8,8 @@ parameters:
 
 services:
   - database
-  # - praqta
-  # - http
+  - praqta
+  - http
 
 # praqtaサービス
 praqta_service:
@@ -19,14 +19,15 @@ praqta_service:
 
 # HTTPサーバーサービス
 http_service:
-  host: localhost
+  host: 0.0.0.0
   port: 8888
   https: yes
   cores: yes
   key_file: "./config/xxx.pem"
-  static_root: ../html/
+  static_root: ./html
   routes:
     "/": index
+    "/api/execute": execute_script
     "/api/execute/{script_name}": execute_script
   auth:
     enabled: no
@@ -40,11 +41,11 @@ database_service:
     type: sqlite3
     comment: デフォルト接続
     connect: ./data/default.sqlite3
-    user: 
-    password: 
+    user:
+    password:
     start: always
     auto_commit: true
-    init_sqls: 
+    init_sqls:
       - ./data/sql/ddl.sql
     pool:
       min: 2

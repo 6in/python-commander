@@ -1,0 +1,18 @@
+root:
+  name: root
+  # text: root
+  children:
+    - name: ツール
+      # text: ツール
+      expanded: true
+      children:
+      - name: Template
+        # text: Template
+        leaf: true
+        page: Pages.Template
+        description: 'テンプレート画面を表示'
+      - name: Sample
+        # text: Sample
+        leaf: true
+        page: Pages.Sample
+        description: 'Monacoエディタのサンプル'

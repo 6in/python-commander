@@ -4,5 +4,11 @@
         "editor.formatOnPaste": true,
         "editor.formatOnSave": true,
     },
+    "terminal.integrated.env.linux": {
+        "PYTHONPATH": "${env:PYTHONPATH}:${workspaceRoot}/packages"
+    },
+    "terminal.integrated.env.windows": {
+        "PYTHONPATH": "${env:PYTHONPATH};${workspaceRoot}/packages"
+    },
     "python.pythonPath": "/home/ohya/.pyenv/versions/3.8.1/bin/python"
 }

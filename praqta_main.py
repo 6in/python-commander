@@ -1,6 +1,10 @@
 import sys
-import praqta.praqta_engine as engine
+import importlib
+# import praqta.praqta_engine as engine
 from docopt import docopt
+
+sys.path.append('./packages')
+
 
 doc = """python-commander
 usage:
@@ -11,9 +15,14 @@ options:
     -s <script>     script name  (optional)
 """
 
-if __name__ == '__main__':
 
-    args = docopt(doc, version="0.0.1")
+def main(args):
 
+    engine = importlib.import_module('praqta.praqta_engine')
     # engine.main('config/properties.yml', 'sample.yml')
     engine.main('config/properties.yml', args['-s'])
+
+
+if __name__ == '__main__':
+
+    main(docopt(doc, version="0.0.1"))

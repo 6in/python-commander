@@ -36,7 +36,7 @@ def main(script_path: str):
 
     # コマンド実行処理
     context.set_rows([{'start': True}])
-    while len(context.get_rows()) != 0:
+    while context.is_stop() == False:
         step = 1
         for commandInstance in commandList:
             context.set_step(step)
@@ -48,6 +48,8 @@ def main(script_path: str):
     # コマンド終了処理
     for commandInstance in commandList:
         commandInstance.term(context)
+
+    return context
 
 
 class PraqtaService(ServiceBase):
@@ -68,7 +70,9 @@ class PraqtaService(ServiceBase):
             file_path = os.path.join(path, script)
             if os.path.exists(file_path):
                 # スクリプト処理実行
-                main(file_path)
+                context = main(file_path)
+                # 結果を格納
+                parameters['context'] = context
                 break
 
     def stop(self, context: ApplicationContext):

@@ -6,6 +6,9 @@ from praqta.interface import ApplicationContext
 from bottle import Bottle, request, response, static_file, run, route, ServerAdapter
 from gevent.pywsgi import WSGIServer
 
+import services
+import json
+
 
 class SSLWebServer(ServerAdapter):
 
@@ -23,8 +26,8 @@ class BottleApp(Bottle):
         self.init_route()
 
     def init_route(self):
-        super().route('/api/test',
-                      ['GET'], self.test)
+        super().route('/api/execute/<script_file>',
+                      ['GET'], self.execute_script)
         super().route('/',
                       ['GET'], self.index)
         super().route('/<file_path:path>',
@@ -41,8 +44,19 @@ class BottleApp(Bottle):
             args.file_path,
             root=self.__parameters.static_root)
 
-    def test(self, **param):
-        return "test"
+    def execute_script(self, **param):
+        response.headers['Content-Type'] = 'application/json'
+
+        args = objdict(request.url_args)
+        praqta = services.get_service('praqta')[0]
+
+        parameters = {
+            "script_file": args.script_file
+        }
+        praqta.start(parameters)
+        context = parameters['context']
+        ret = [x.raw() for x in context.get_rows()]
+        return json.dumps(ret)
 
 
 class HttpService(ServiceBase):
@@ -57,7 +71,7 @@ class HttpService(ServiceBase):
                 port=self.__config.port,
                 debug=True,
                 reloader=True,
-                server=SSLWebServer
+                # server=SSLWebServer
             )
         finally:
             pass

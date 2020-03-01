@@ -44,6 +44,7 @@ class CommandContext(object):
     def __init__(self):
         self.__step = 0
         self.__status = 0
+        self.__stop = False
         self.__rows = []
 
     def set_step(self, step: int):
@@ -79,6 +80,12 @@ class CommandContext(object):
 
     def get_service(self, service_name: str) -> dict:
         return {}
+
+    def set_stop(self):
+        self.__stop = True
+
+    def is_stop(self):
+        return self.__stop
 
 
 class ModuleInfo(object):
@@ -124,3 +131,6 @@ class Row(object):
             return self.__row[name]
         else:
             return None
+
+    def raw(self) -> dict:
+        return self.__row

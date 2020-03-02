@@ -22,14 +22,10 @@ praqta_service:
 http_service:
   host: 0.0.0.0
   port: 8888
-  https: yes
-  cores: yes
-  key_file: "./config/xxx.pem"
+  ssl: yes
+  key_file: "./config/server.pem"
   static_root: ./html
-  routes:
-    "/": index
-    "/api/execute": execute_script
-    "/api/execute/{script_name}": execute_script
+  debug: yes
   auth:
     enabled: no
     type: basic

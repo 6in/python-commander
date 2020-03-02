@@ -11,11 +11,16 @@ import json
 
 
 class SSLWebServer(ServerAdapter):
+    cert_file = ""
+
+    @staticmethod
+    def set_certfile(file: str):
+        SSLWebServer.cert_file = file
 
     def run(self, handler):
         srv = WSGIServer((self.host, self.port), handler,
-                         certfile='./config/server.pem',
-                         keyfile='./config/server.pem')
+                         certfile=SSLWebServer.cert_file,
+                         keyfile=SSLWebServer.cert_file)
         srv.serve_forever()
 
 
@@ -32,6 +37,27 @@ class BottleApp(Bottle):
                       ['GET'], self.index)
         super().route('/<file_path:path>',
                       ['GET'], self.static_controller)
+
+        super().add_hook('after_request', self.enable_cors)
+
+    def enable_cors(self):
+
+        # CORSのヘッダ取得
+        cors_headers = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token '
+        # cors_headers += app.cors_headers
+
+        origin = "*"
+        # if 'Origin' in request.headers().keys():
+        #     origin = request.headers()['Origin']
+
+        response.headers['Cache-Control'] = 'no-cache'
+        response.headers['Access-Control-Allow-Origin'] = origin
+        response.headers['Access-Control-Allow-Methods'] = 'PUT, GET, POST, DELETE, UPDATE, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = cors_headers
+        # クッキー対応
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
+        # 24時間のキャッシュ
+        response.headers['Access-Control-Max-Age'] = '86400'
 
     def index(self, **param):
         return static_file(
@@ -65,14 +91,20 @@ class HttpService(ServiceBase):
         self.__bottle = BottleApp(config)
 
     def start(self, context: dict):
+
         try:
-            self.__bottle.run(
-                host=self.__config.host,
-                port=self.__config.port,
-                debug=True,
-                reloader=True,
-                # server=SSLWebServer
-            )
+            param = {
+                "host": self.__config.host,
+                "port": self.__config.port,
+                "debug": self.__config.debug,
+                "reloader": True,
+            }
+            if self.__config.ssl:
+                SSLWebServer.set_certfile(self.__config.key_file)
+                param["server"] = SSLWebServer
+
+            self.__bottle.run(**param)
+
         finally:
             pass
 

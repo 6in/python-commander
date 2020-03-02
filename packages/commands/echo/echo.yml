@@ -6,8 +6,16 @@ parameters:
     comment: 列名を配列で指定する
     require: true
     default: []
+
   targets2:
     type: list
     comment: 列名を配列で指定する
     require: true
     default: []
+sample: |
+  type: Echo
+  comment: 行単位で、指定したカラムの内容を表示
+  targets:
+    - key1
+    - key2
+    - key3

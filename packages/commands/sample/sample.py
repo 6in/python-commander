@@ -21,8 +21,6 @@ class Sample(CommandBase):
         if len(rows) == 0:
             context.set_stop()
         else:
-            # row = self.__rows[:1]
-            # self.__rows = self.__rows[1:]
             context.set_rows(rows)
             context.set_stop()
 

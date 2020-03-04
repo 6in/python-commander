@@ -1,0 +1,58 @@
+name: xsv_reader
+comment: CSV/TSVファイルを読み込む
+parameters:
+  file_path_key:
+    type: string
+    comment: |
+      ファイルパスを格納しているキーを指定します。
+    require: true
+    default: []
+
+  separator:
+    type: enum
+    values:
+      - csv
+      - tsv
+      - delimitor
+    comment: セパレータを指定する
+    require: yes
+    default: csv
+
+  delimitor:
+    type: string
+    comment: 区切り文字を指定する
+    require: yes
+    default: ";"
+
+  escape_char:
+    type: string
+    comment: |
+      エスケープ用の文字列を指定します。読み込み時、escapechar はそれに引き続く文字の特別な意味を取り除きます。
+    require: no
+    default: ";"
+
+  quotechar:
+    type: string
+    comment: |
+      delimiter や quotechar といった特殊文字を含むか、改行文字を含むフィールドをクオートする際に用いられる 1 文字からなる文字	'
+    require: no
+    default: '"'
+
+  fetch_size:
+    type: int
+    comment: |
+      一度に抽出する件数を指定
+      0ならすべて読み込み
+    require: yes
+
+  encoding:
+    type: enum
+    values:
+      - utf8
+      - ms932
+
+sample: |
+  type: xsv_reader
+  comment: xsvファイルを読み込む
+  file_path: ${row.file_path}
+  separator: xsv

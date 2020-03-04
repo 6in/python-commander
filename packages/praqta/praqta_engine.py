@@ -27,28 +27,28 @@ def main(config_file: str, script_file: str):
         # サービスの開始
         service.start(config['parameters'])
 
-    dbService = cast(DatabaseService, services.get_service('database')[0])
-    with dbService.open('default') as db:
-        dbService.execute_query(db, '''
-        insert into products(name,description,price,discount,reg_date)
-        values(
-            /*name*/'' ,
-            /*description*/'' ,
-            /*price*/0 ,
-            /*discount*/0 ,
-            /*reg_date*/''
-        )
-        ''', {
-            'name': 'ssss',
-            'description': 'ssaslaksdf',
-            'price': 100,
-            'discount': 10,
-            'reg_date': '2020/02/29 23:59:59',
-        })
+    # dbService = cast(DatabaseService, services.get_service('database')[0])
+    # with dbService.open('default') as db:
+    #     dbService.execute_query(db, '''
+    #     insert into products(name,description,price,discount,reg_date)
+    #     values(
+    #         /*name*/'' ,
+    #         /*description*/'' ,
+    #         /*price*/0 ,
+    #         /*discount*/0 ,
+    #         /*reg_date*/''
+    #     )
+    #     ''', {
+    #         'name': 'ssss',
+    #         'description': 'ssaslaksdf',
+    #         'price': 100,
+    #         'discount': 10,
+    #         'reg_date': '2020/02/29 23:59:59',
+    #     })
 
-        c = dbService.execute_query(db, "select * from products", {})
-        for row in c:
-            print(tuple(row))
+    #     c = dbService.execute_query(db, "select * from products", {})
+    #     for row in c:
+    #         print(tuple(row))
 
     # サービスの停止を行う
     for service_name in service_list:

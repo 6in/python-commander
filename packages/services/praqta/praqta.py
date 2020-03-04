@@ -35,14 +35,19 @@ def main(script_path: str):
         commandList.append(commandInstance)
 
     # コマンド実行処理
-    context.set_rows([{'start': True}])
+    context.set_rows([script['parameters']])
     while context.is_stop() == False:
         step = 1
         for commandInstance in commandList:
-            context.set_step(step)
-            commandInstance.proc(context)
-            if len(context.get_rows()) == 0:
+            if context.is_stop():
                 break
+            context.set_step(step)
+            # コマンド実行
+            commandInstance.proc(context)
+
+            # 先頭レベルのコマンドにおいて、提供するべきデータが無いときは、停止フラグをセットする
+            if step == 1 and type(context.get_rows()) == list and len(context.get_rows()) == 0:
+                context.set_stop()
             step += 1
 
     # コマンド終了処理

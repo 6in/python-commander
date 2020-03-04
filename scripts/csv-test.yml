@@ -1,0 +1,28 @@
+parameters:
+  script: サンプルスクリプト
+  file_path: ./data/file_list.csv
+
+commands:
+  - type: xsv_reader
+    comment: CSVデータが記述されているファイルパス
+    parameters:
+      file_path_key: file_path
+      delimiter: tab
+      encoding: utf-8
+      header: no
+
+  - type: xsv_reader
+    comment: CSVデータ読み込み
+    parameters:
+      file_path_key: file_path
+      delimiter: comma
+      encoding: utf-8
+      header: no
+
+  - type: echo
+    comment: エコーサンプル１
+    parameters:
+      targets:
+        - ADDR1
+        - ADDR2
+        - ADDR3

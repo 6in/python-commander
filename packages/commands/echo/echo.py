@@ -1,6 +1,6 @@
 import typing
 from .. import CommandBase
-from praqta.interface import CommandContext
+from praqta.interface import CommandContext, Row
 
 
 class SampleCommand(CommandBase):
@@ -17,12 +17,14 @@ class SampleCommand(CommandBase):
         step = context.get_step()
         targets = self.__args['targets']
         print('================================')
+        newRows = []
         for row in context.get_rows():
+            newRows.append(row)
             for target in targets:
                 value = row[target]
                 print(f'echo {step}:{target}={value}')
             print('----------------------------')
-        pass
+        context.set_rows(iter(newRows))
 
     def term(self, context: CommandContext):
         pass

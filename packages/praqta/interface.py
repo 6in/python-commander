@@ -123,7 +123,10 @@ class ModuleInfo(object):
 
 class Row(object):
     def __init__(self, row: dict):
-        self.__row = row
+        if type(row) == Row:
+            self.__row = row.__dict__
+        else:
+            self.__row = row
 
     def __getitem__(self, name: str):
 

@@ -46,6 +46,8 @@ class CommandContext(object):
         self.__status = 0
         self.__stop = False
         self.__rows = []
+        self.__supplieres = []
+        self.__script_parameters = {}
 
     def set_step(self, step: int):
         self.__step = step
@@ -68,6 +70,13 @@ class CommandContext(object):
     def get_parameterspec(self) -> dict:
         return self.__argspec
 
+    def set_script_parameters(self, props: dict):
+        self.__script_parameters = props
+        return self
+
+    def get_script_parameters(self, ) -> dict:
+        return self.__script_parameters
+
     def set_rows(self, rows: Iterable):
         self.__rows = rows
         return self
@@ -85,7 +94,12 @@ class CommandContext(object):
         self.__stop = True
 
     def is_stop(self):
-        return self.__stop
+        count = len(self.__supplieres)
+        return count == len([x for x in self.__supplieres if x.has_data() == False])
+
+    def set_supplier(self, obj: object):
+        self.__supplieres.append(obj)
+        return self
 
 
 class ModuleInfo(object):
@@ -124,7 +138,7 @@ class ModuleInfo(object):
 class Row(object):
     def __init__(self, row: dict):
         if type(row) == Row:
-            self.__row = row.__dict__
+            self.__row = row.__row
         else:
             self.__row = row
 
@@ -132,8 +146,15 @@ class Row(object):
 
         if name in self.__row:
             return self.__row[name]
+        elif name.upper() in self.__row:
+            return self.__row[name.upper()]
+        elif name.lower() in self.__row:
+            return self.__row[name.lower()]
         else:
             return None
 
     def raw(self) -> dict:
         return self.__row
+
+    def keys(self):
+        return self.__row.keys()

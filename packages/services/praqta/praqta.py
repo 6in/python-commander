@@ -16,6 +16,9 @@ def main(script_path: str):
         script = yaml.load(f)
         commands = script['commands']
 
+    # スクリプトパラメータを設定
+    context.set_script_parameters(script['parameters'])
+
     # スクリプトからコマンド群を順番に生成
     for command in commands:
         # コマンド名からコマンドインスタンスを作成
@@ -39,15 +42,9 @@ def main(script_path: str):
     while context.is_stop() == False:
         step = 1
         for commandInstance in commandList:
-            if context.is_stop():
-                break
             context.set_step(step)
             # コマンド実行
             commandInstance.proc(context)
-
-            # 先頭レベルのコマンドにおいて、提供するべきデータが無いときは、停止フラグをセットする
-            if step == 1 and type(context.get_rows()) == list and len(context.get_rows()) == 0:
-                context.set_stop()
             step += 1
 
     # コマンド終了処理

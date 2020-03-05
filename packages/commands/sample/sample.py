@@ -8,6 +8,8 @@ class Sample(CommandBase):
         pass
 
     def init(self, context: CommandContext):
+        context.set_supplier(self)
+        self.__has_data = True
         self.__rows = [
             Row({'p1': 'abc', 'p2': 123, 'p3': True}),
             Row({'p1': 'def', 'p2': 456, 'p3': False}),
@@ -18,14 +20,14 @@ class Sample(CommandBase):
     def proc(self, context: CommandContext):
         rows = self.__rows
         print(f"proc: step={context.get_step()}")
-        if len(rows) == 0:
-            context.set_stop()
-        else:
-            context.set_rows(rows)
-            context.set_stop()
+        context.set_rows(iter(rows))
+        self.__has_data = False
 
     def term(self, context: CommandContext):
         pass
+
+    def has_data(self):
+        return self.__has_data
 
 
 def new_instance() -> CommandBase:

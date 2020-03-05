@@ -4,25 +4,46 @@ parameters:
 
 commands:
   - type: xsv_reader
-    comment: CSVデータが記述されているファイルパス
+    comment: CSVデータが記述されているファイルパス(親)
     parameters:
       file_path_key: file_path
       delimiter: tab
       encoding: utf-8
-      header: no
+      header: yes
 
   - type: xsv_reader
-    comment: CSVデータ読み込み
+    comment: CSVデータ読み込み(子)
     parameters:
       file_path_key: file_path
       delimiter: comma
       encoding: utf-8
-      header: no
+      header: yes
 
   - type: echo
     comment: エコーサンプル１
     parameters:
       targets:
         - ADDR1
-        - ADDR2
-        - ADDR3
+        - addr2
+        - addr3
+
+  - type: sql_execute
+    comment: CSVデータをテーブルに格納する
+    parameters:
+      db_name: default
+      batch_count: 100
+      init_sql: |
+        delete from okinawa
+      main_sql: |
+        insert into okinawa(zip_code,zip_code_sub,zip_code_ex,addr1,addr2,addr3,addr4,addr5,addr6)
+        values (
+          /*zip_code*/'',
+          /*zip_code_sub*/'',
+          /*zip_code_ex*/'',
+          /*addr1*/'',
+          /*addr2*/'',
+          /*addr3*/'',
+          /*addr4*/'',
+          /*addr5*/'',
+          /*addr6*/'')
+      term_sql: ""

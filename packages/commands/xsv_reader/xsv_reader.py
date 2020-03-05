@@ -7,28 +7,35 @@ import csv
 
 class XsvReader(CommandBase):
     def __init__(self):
-        self.__iter_rows = None
+        self.__iter_parent_rows = None
         self.__open_files = []
+        self.__has_parent_data = True
+        self.__has_chidren_data = False
 
     def init(self, context: CommandContext):
+        # パラメータ取得
         self.__params = objdict(context.get_parameters())
 
-    def proc(self, context: CommandContext):
-        # 最初に取得したデータを保存
-        if self.__iter_rows == None:
-            self.__iter_rows = iter([row for row in context.get_rows()])
+        # データ供給コマンドであることを設定
+        context.set_supplier(self)
 
-        # 保存したデータから１行取得
+    def proc(self, context: CommandContext):
+        # 親データを保存
+        if self.__iter_parent_rows == None:
+            self.__iter_parent_rows = iter([row for row in context.get_rows()])
+            self.__has_parent_data = True
+
+        # 親から１行取得し、オープンするべきファイルを取得する
         try:
-            row = next(self.__iter_rows)
+            row = next(self.__iter_parent_rows)
         except StopIteration:
+            self.__has_parent_data = False
             context.set_rows([])
             return
 
         # ファイルオープン
         file = open(row[self.__params.file_path_key],
-                    encoding=self.__params.encoding
-                    )
+                    encoding=self.__params.encoding)
         # ファイルオブジェクトを保存(termでクローズ)
         self.__open_files.append(file)
 
@@ -47,6 +54,9 @@ class XsvReader(CommandBase):
         # オープンしたファイルをクローズする
         for file in self.__open_files:
             file.close()
+
+    def has_data(self):
+        return self.__has_parent_data or self.__has_chidren_data
 
 
 def new_instance() -> CommandBase:

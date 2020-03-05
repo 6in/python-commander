@@ -19,7 +19,7 @@
             "console": "integratedTerminal",
             "args": [
                 "-s",
-                "sample.yml"
+                "csv-test.yml"
             ]
         }
     ]

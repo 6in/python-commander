@@ -80,12 +80,25 @@ class DatabaseService(ServiceBase):
                 print(f'{db_type} was not supported.')
         return None
 
-    def execute_query(self, db, sql: str, params: dict) -> Iterable:
+    def execute_query(self, cursor, sql: str, params: dict) -> Iterable:
+        if sql.strip() == '':
+            return []
         (newSql, paramsIndex) = parse_2way_sql(sql)
         queryParams = [params[x] for x in paramsIndex]
-        cursor = db.cursor()
-        print(f"{newSql} param => {queryParams}")
         return cursor.execute(newSql, queryParams)
+
+    def execute_queries(self, cursor, sql: str, rows: list) -> Iterable:
+        if sql.strip() == '':
+            return []
+        if len(rows) == 0:
+            return []
+        (newSql, paramsIndex) = parse_2way_sql(sql)
+
+        queryRows = []
+        for row in rows:
+            queryRows.append([row[x] for x in paramsIndex])
+        # print(f"{newSql} param => {queryParams}")
+        return cursor.executemany(newSql, queryRows)
 
 
 def new_instance() -> ServiceBase:

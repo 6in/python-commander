@@ -1,4 +1,4 @@
-ZIP_CODE,ZIP_CODE_SUB,ZIP_CODE_EX,ADDR1,ADDR2,ADDR3,ADDR4,ADDR5,ADDR6
+zip_code,zip_code_sub,zip_code_ex,addr1,addr2,addr3,addr4,addr5,addr6
 47201,900,9000000,ｵｷﾅﾜｹﾝ,ﾅﾊｼ,ｲｶﾆｹｲｻｲｶﾞﾅｲﾊﾞｱｲ,沖縄県,那覇市,以下に掲載がない場合
 47201,90101,9010154,ｵｷﾅﾜｹﾝ,ﾅﾊｼ,ｱｶﾐﾈ,沖縄県,那覇市,赤嶺
 47201,900,9000002,ｵｷﾅﾜｹﾝ,ﾅﾊｼ,ｱｹﾎﾞﾉ,沖縄県,那覇市,曙

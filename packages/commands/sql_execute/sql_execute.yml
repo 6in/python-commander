@@ -1,0 +1,33 @@
+name: sql_execute
+comment: 読み込んだ行をパラメータとして、SQLを発光する
+parameters:
+  db_name:
+    type: string
+    comment: |
+      データベース名を指定します
+    require: yes
+    default: "default"
+
+  init_sql:
+    type: string
+    comment: |
+      コマンド初期化時に実行するSQLを記述します。セミコロン区切りで複数SQL実行できます。
+      スクリプトファイルの parameters プロパティに記述されているプロパティを、SQLのパラメータ
+      に引き渡すことが可能です。
+    require: no
+    default: ""
+
+  main_sql:
+    type: string
+    comment: 実行するSQLを指定します
+    require: yes
+    default: ""
+
+  term_sql:
+    type: string
+    comment: |
+      コマンド終了時に実行するSQLを記述します。セミコロン区切りで複数SQL実行できます。
+      スクリプトファイルの parameters プロパティに記述されているプロパティを、SQLのパラメータ
+      に引き渡すことが可能です。
+    require: no
+    default: ""

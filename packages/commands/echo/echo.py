@@ -3,7 +3,7 @@ from .. import CommandBase
 from praqta.interface import CommandContext, Row
 
 
-class SampleCommand(CommandBase):
+class Echo(CommandBase):
     def __init__(self):
         pass
 
@@ -19,16 +19,17 @@ class SampleCommand(CommandBase):
         print('================================')
         newRows = []
         for row in context.get_rows():
+            row = Row(row)
             newRows.append(row)
             for target in targets:
                 value = row[target]
                 print(f'echo {step}:{target}={value}')
             print('----------------------------')
-        context.set_rows(iter(newRows))
+        context.set_rows(newRows)
 
     def term(self, context: CommandContext):
         pass
 
 
 def new_instance() -> CommandBase:
-    return SampleCommand()
+    return Echo()

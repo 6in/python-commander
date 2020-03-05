@@ -8,11 +8,13 @@ sys.path.append('./packages')
 
 doc = """python-commander
 usage:
-    test.py [-h|--help] [-s|--scripts]
+    praqta_main.py (-c|--config <config> ) [-s|--script <script>] [-p <params>...]
 
 options:
     -h,--help       show this help message and exit
-    -s <script>     script name  (optional)
+    -c --config     config path
+    -s --script     script name  (optional)
+    -p              args key value
 """
 
 
@@ -20,7 +22,9 @@ def main(args):
 
     engine = importlib.import_module('praqta.praqta_engine')
     # engine.main('config/properties.yml', 'sample.yml')
-    engine.main('config/properties.yml', args['-s'])
+    print(args['<params>'])
+
+    engine.main(args['<config>'], args['<script>'])
 
 
 if __name__ == '__main__':

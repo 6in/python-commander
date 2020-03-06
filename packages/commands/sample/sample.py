@@ -1,6 +1,10 @@
 import typing
 from .. import CommandBase
 from praqta.interface import Row, CommandContext
+from typing import cast
+from logging import Logger
+
+logger = cast(Logger, {})
 
 
 class Sample(CommandBase):
@@ -19,7 +23,6 @@ class Sample(CommandBase):
 
     def proc(self, context: CommandContext):
         rows = self.__rows
-        print(f"proc: step={context.get_step()}")
         context.set_rows(iter(rows))
         self.__has_data = False
 
@@ -30,5 +33,7 @@ class Sample(CommandBase):
         return self.__has_data
 
 
-def new_instance() -> CommandBase:
+def new_instance(loggerInject: Logger) -> CommandBase:
+    global logger
+    logger = loggerInject
     return Sample()

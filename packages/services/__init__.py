@@ -30,8 +30,8 @@ class ServiceBase(metaclass=ABCMeta):
 
 
 def get_service(service_name: str) -> ServiceBase:
-    if not service_name in __moduleInstanceCache:
-        new_instance(service_name)
+    # if not service_name in __moduleInstanceCache:
+    #     new_instance(service_name)
     return __moduleInstanceCache[service_name]
 
 
@@ -43,7 +43,7 @@ def stop_service(service_name: str):
     __moduleInstanceCache[service_name] = []
 
 
-def new_instance(service_name: str) -> ServiceBase:
+def new_instance(service_name: str, logger) -> ServiceBase:
     """
     サービスのインスタンスを返却します
 
@@ -75,7 +75,7 @@ def new_instance(service_name: str) -> ServiceBase:
         __moduleInfoCache[packageName] = moduleInfo
 
     # インスタンスを生成
-    serviceInstance = moduleInfo.new_instance()
+    serviceInstance = moduleInfo.new_instance(logger)
 
     # サービスインスタンスのキャッシュへ格納
     if not service_name in __moduleInstanceCache:

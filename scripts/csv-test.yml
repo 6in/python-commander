@@ -1,10 +1,12 @@
 parameters:
   script: サンプルスクリプト
   file_path: ./data/file_list.csv
+  echo_target: ADDR1
 
 commands:
   - type: xsv_reader
     comment: CSVデータが記述されているファイルパス(親)
+    debug: no
     parameters:
       file_path_key: file_path
       delimiter: tab
@@ -13,6 +15,7 @@ commands:
 
   - type: xsv_reader
     comment: CSVデータ読み込み(子)
+    debug: no
     parameters:
       file_path_key: file_path
       delimiter: comma
@@ -21,17 +24,19 @@ commands:
 
   - type: echo
     comment: エコーサンプル１
+    debug: yes
     parameters:
-      targets:
-        - ADDR1
+      target_keys:
+        - ${echo_target}
         - addr2
         - addr3
 
   - type: sql_execute
     comment: CSVデータをテーブルに格納する
+    debug: no
     parameters:
       db_name: default
-      batch_count: 100
+      batch_count: 0
       init_sql: |
         delete from okinawa
       main_sql: |

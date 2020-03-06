@@ -1,6 +1,10 @@
 import typing
 from .. import CommandBase
 from praqta.interface import Row, CommandContext, objdict
+from typing import cast
+from logging import Logger
+
+logger = cast(Logger, {})
 
 
 class Template(CommandBase):
@@ -18,7 +22,7 @@ class Template(CommandBase):
         を取得することができます。
         """
         # パラメータを取得する( self.__params.プロパティ名 でアクセス可能)
-        self.__params = objdict(context.get_parameters())
+        self.__params = context.get_parameters()
         # このコマンドがデータを供給するならコメントアウト
         # context.set_supplier(self)
 
@@ -63,5 +67,8 @@ class Template(CommandBase):
         return self.__has_data
 
 
-def new_instance() -> CommandBase:
+def new_instance(loggerInject: Logger) -> CommandBase:
+    global logger
+    logger = loggerInject
+
     return Template()

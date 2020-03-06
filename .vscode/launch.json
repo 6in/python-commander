@@ -24,7 +24,9 @@
                 "csv-test.yml",
                 "-p",
                 "abc=123",
-                "def=456"
+                "def=456",
+                "debug=false",
+                "jkl=false"
             ]
         }
     ]

@@ -1,13 +1,14 @@
-
-
-from praqta.interface import objdict
 from .. import ServiceBase
-from praqta.interface import ApplicationContext
 from bottle import Bottle, request, response, static_file, run, route, ServerAdapter
 from gevent.pywsgi import WSGIServer
-
-import services
+from praqta.interface import ApplicationContext
+from praqta.interface import objdict
+from praqta.logger import Logger
+from typing import Iterable, cast
 import json
+import services
+
+logger = cast(Logger, None)
 
 
 class SSLWebServer(ServerAdapter):
@@ -112,5 +113,7 @@ class HttpService(ServiceBase):
         pass
 
 
-def new_instance() -> ServiceBase:
+def new_instance(loggerInject: Logger) -> ServiceBase:
+    global logger
+    logger = loggerInject
     return HttpService()

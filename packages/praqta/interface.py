@@ -7,12 +7,36 @@ import os.path
 import time
 import typing
 import yaml
+import re
+
+rePlaceHolder = re.compile(r"(\$\{(\w+)\})")
 
 
 class objdict(dict):
+
+    def __init__(self, src):
+        super().__init__(src)
+
+    def set_source(self, props: dict):
+        self.__props = objdict(props)
+        return self
+
+    def embed_place_holder(self, value):
+        if type(value) == str:
+            for (tgt, key) in rePlaceHolder.findall(value):
+                rep = self.__props[key]
+                value = value.replace(tgt, rep)
+        elif type(value) == list:
+            return [self.embed_place_holder(x) for x in value]
+
+        return value
+
+    def get_system_parameter(self, name: str):
+        return self.__props[name]
+
     def __getattr__(self, name):
         if name in self:
-            return self[name]
+            return self.embed_place_holder(self[name])
         else:
             raise AttributeError("No such attribute: " + name)
 
@@ -61,7 +85,7 @@ class CommandContext(object):
         return self
 
     def get_parameters(self) -> dict:
-        return self.__args
+        return objdict(self.__args).set_source(self.get_script_parameters())
 
     def set_parameterspec(self, spec: dict):
         self.__argspec = spec
@@ -115,7 +139,6 @@ class ModuleInfo(object):
         (path, _) = os.path.splitext(self.__file)
         with open(f'{path}.yml', 'r') as f:
             self.__spec = yaml.load(f)
-            print(self.__spec)
             # todo: json schemaによるspecのチェック
 
     def get_spec(self) -> dict:
@@ -131,8 +154,8 @@ class ModuleInfo(object):
         importlib.reload(self.__module)
         return self
 
-    def new_instance(self):
-        return self.__module.new_instance()
+    def new_instance(self, logger):
+        return self.__module.new_instance(logger)
 
 
 class Row(object):

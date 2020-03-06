@@ -1,8 +1,11 @@
 from .. import ServiceBase
 from praqta.interface import ApplicationContext, objdict
-from typing import Iterable
 import sqlite3
 import re
+
+from typing import Iterable, cast
+from logging import Logger
+logger = cast(Logger, {})
 
 
 def open_sqlite(config: dict) -> sqlite3.Connection:
@@ -12,20 +15,20 @@ def open_sqlite(config: dict) -> sqlite3.Connection:
         conn.row_factory = sqlite3.Row
         return conn
     except RuntimeError as e:
-        print(
+        logger.error(
             f'database({conf.comment} was not opened. connection={conf.connect}')
         raise e
 
 
 def execute_sql_file(conn, sql_file: str):
     cursor = conn.cursor()
-    print(f'read sql {sql_file}')
+    logger.debug(f'read sql {sql_file}')
     with open(sql_file, 'r') as f:
         text = f.read()
         for sql in text.split(';'):
             sql = sql.strip()
             if len(sql) > 0:
-                print(f'execute sql=\n{sql}')
+                logger.debug(f'execute sql=\n{sql}')
                 cursor.execute(sql)
 
 
@@ -49,18 +52,20 @@ def parse_2way_sql(sql: str) -> Iterable:
 class DatabaseService(ServiceBase):
     def init(self, config: dict):
         self.__dbconfig = config
-        print(f'DatabaseService.init({config})')
 
         # 設定されているDB情報をもとに接続を試してみる
         # 接続できなかったら例外をスローして終了
+        logger.info("start db open check.")
         for db_name in self.__dbconfig:
             db_conf = objdict(self.__dbconfig[db_name])
+            logger.info(f"try open '{db_name}'")
             with self.open(db_name) as db:
                 if len(db_conf.init_sqls) > 0:
                     # sql一覧を取得
                     for sql_file in db_conf.init_sqls:
                         # SQLを実行(；区切りを順次実行)
                         execute_sql_file(db, sql_file)
+            logger.info(f"ok '{db_name}'")
 
     def start(self, context: ApplicationContext):
         # todo: コネクションプールの処理を行う
@@ -77,7 +82,7 @@ class DatabaseService(ServiceBase):
             if db_type == 'sqlite3':
                 return open_sqlite(db_conf)
             else:
-                print(f'{db_type} was not supported.')
+                logger.warn(f'{db_type} was not supported.')
         return None
 
     def execute_query(self, cursor, sql: str, params: dict) -> Iterable:
@@ -97,9 +102,10 @@ class DatabaseService(ServiceBase):
         queryRows = []
         for row in rows:
             queryRows.append([row[x] for x in paramsIndex])
-        # print(f"{newSql} param => {queryParams}")
         return cursor.executemany(newSql, queryRows)
 
 
-def new_instance() -> ServiceBase:
+def new_instance(loggerInject: Logger = None) -> ServiceBase:
+    global logger
+    logger = loggerInject
     return DatabaseService()

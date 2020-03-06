@@ -3,6 +3,10 @@ from .. import CommandBase
 from praqta.interface import Row, CommandContext, objdict
 
 import csv
+from typing import cast
+from logging import Logger
+
+logger = cast(Logger, {})
 
 
 class XsvReader(CommandBase):
@@ -14,7 +18,7 @@ class XsvReader(CommandBase):
 
     def init(self, context: CommandContext):
         # パラメータ取得
-        self.__params = objdict(context.get_parameters())
+        self.__params = context.get_parameters()
 
         # データ供給コマンドであることを設定
         context.set_supplier(self)
@@ -59,5 +63,7 @@ class XsvReader(CommandBase):
         return self.__has_parent_data or self.__has_chidren_data
 
 
-def new_instance() -> CommandBase:
+def new_instance(loggerInject: Logger) -> CommandBase:
+    global logger
+    logger = loggerInject
     return XsvReader()

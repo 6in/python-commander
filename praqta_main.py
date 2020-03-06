@@ -21,10 +21,10 @@ options:
 def main(args):
 
     engine = importlib.import_module('praqta.praqta_engine')
-    # engine.main('config/properties.yml', 'sample.yml')
-    print(args['<params>'])
-
-    engine.main(args['<config>'], args['<script>'])
+    engine.main(
+        args['<config>'],
+        args['<script>'],
+        args['<params>'])
 
 
 if __name__ == '__main__':

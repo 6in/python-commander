@@ -1,35 +1,48 @@
-
-import commands as factory
-import yaml
-from praqta.interface import Row, CommandContext
 from .. import ServiceBase
-from praqta.interface import ApplicationContext
+from praqta.interface import ApplicationContext, Row, CommandContext, objdict
+from praqta.logger import Logger
+from typing import cast
+import commands as factory
 import os.path
+import yaml
+
+logger = cast(Logger, None)
 
 
-def main(script_path: str):
+def main(script_path: str, config_parameters: dict):
     context = CommandContext()
     commandList = []
 
     # スクリプトロード
     with open(script_path, 'r') as f:
-        script = yaml.load(f)
+        script = yaml.load(f, Loader=yaml.FullLoader)
         commands = script['commands']
 
     # スクリプトパラメータを設定
+    script['parameters'].update(config_parameters)
     context.set_script_parameters(script['parameters'])
 
-    # スクリプトからコマンド群を順番に生成
+    debug_mode = False
+    if 'debug' in script['parameters']:
+        if type(script['parameters']['debug']) == bool:
+            debug_mode = script['parameters']['debug'] == True
+
+            # スクリプトからコマンド群を順番に生成
     for command in commands:
+
+        command = objdict(command)
+        if debug_mode == False and command.debug == True:
+            continue
+
         # コマンド名からコマンドインスタンスを作成
-        commandInstance = factory.new_instance(command['type'])
+        commandInstance = factory.new_instance(command.type, logger)
 
         # コマンド引数の仕様を設定
         context.set_parameterspec(
-            factory.get_command_arg_spec(command['type']))
+            factory.get_command_arg_spec(command.type))
 
         # コマンド引数を設定
-        context.set_parameters(command['parameters'])
+        context.set_parameters(command.parameters)
 
         # コマンドの初期化
         commandInstance.init(context)
@@ -37,8 +50,10 @@ def main(script_path: str):
         # コマンドリストへ追加
         commandList.append(commandInstance)
 
-    # コマンド実行処理
+    # スクリプトパラメータを１行目のデータとして渡す
     context.set_rows([script['parameters']])
+
+    # コマンド実行処理
     while context.is_stop() == False:
         step = 1
         for commandInstance in commandList:
@@ -57,7 +72,6 @@ def main(script_path: str):
 class PraqtaService(ServiceBase):
     def init(self, config: dict):
         self.__config = config
-        print(f'PraqtaService.init({config})')
 
     def start(self, parameters):
         global main
@@ -72,7 +86,7 @@ class PraqtaService(ServiceBase):
             file_path = os.path.join(path, script)
             if os.path.exists(file_path):
                 # スクリプト処理実行
-                context = main(file_path)
+                context = main(file_path, parameters)
                 # 結果を格納
                 parameters['context'] = context
                 break
@@ -81,5 +95,7 @@ class PraqtaService(ServiceBase):
         pass
 
 
-def new_instance() -> ServiceBase:
+def new_instance(loggerInject: Logger) -> ServiceBase:
+    global logger
+    logger = loggerInject
     return PraqtaService()

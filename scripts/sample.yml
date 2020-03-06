@@ -4,16 +4,18 @@ parameters:
 commands:
   - type: sample
     comment: サンプルデータを返却
+    debug: no
     parameters:
-      targets:
+      target_keys:
         - p1
         - p2
         - p4
 
   - type: echo
     comment: エコーサンプル１
+    debug: no
     parameters:
-      targets:
+      target_keys:
         - p1
         - p2
         - p4

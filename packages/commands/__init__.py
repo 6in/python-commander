@@ -33,7 +33,7 @@ def get_command_arg_spec(command_name: str) -> dict:
     return __moduleInfoCache[packageName].get_spec()
 
 
-def new_instance(command_name: str) -> CommandBase:
+def new_instance(command_name: str, logger) -> CommandBase:
     """
     コマンドのインスタンスを返却します
 
@@ -63,4 +63,4 @@ def new_instance(command_name: str) -> CommandBase:
         # キャッシュに格納
         __moduleInfoCache[packageName] = moduleInfo
 
-    return moduleInfo.new_instance()
+    return moduleInfo.new_instance(logger)

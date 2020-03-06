@@ -1,6 +1,10 @@
 import typing
 from .. import CommandBase
 from praqta.interface import CommandContext, Row
+from typing import cast
+from logging import Logger
+
+logger = cast(Logger, {})
 
 
 class Echo(CommandBase):
@@ -9,13 +13,10 @@ class Echo(CommandBase):
 
     def init(self, context: CommandContext):
         self.__args = context.get_parameters()
-        spec = context.get_parameterspec()
-        for x in spec["parameters"]:
-            print(x)
 
     def proc(self, context: CommandContext):
         step = context.get_step()
-        targets = self.__args['targets']
+        targets = self.__args.target_keys
         print('================================')
         newRows = []
         for row in context.get_rows():
@@ -31,5 +32,7 @@ class Echo(CommandBase):
         pass
 
 
-def new_instance() -> CommandBase:
+def new_instance(loggerInject: Logger) -> CommandBase:
+    global logger
+    logger = loggerInject
     return Echo()

@@ -4,6 +4,11 @@ from praqta.interface import Row, CommandContext, objdict
 import services
 from services.database.database import DatabaseService
 
+from typing import cast
+from logging import Logger
+
+logger = cast(Logger, {})
+
 
 class SqlExecute(CommandBase):
     def __init__(self):
@@ -11,12 +16,13 @@ class SqlExecute(CommandBase):
 
     def init(self, context: CommandContext):
         # パラメータを取得する
-        self.__params = objdict(context.get_parameters())
+        self.__params = context.get_parameters()
 
         # データベースサービスを取得
         self.__dbService = cast(
             DatabaseService, services.get_service('database')[0])
         # アクセスしたいDB名を指定してDBインスタンスを取得
+        logger.info(f"open database {self.__params.db_name}")
         self.__db = self.__dbService.open(self.__params.db_name)
         self.__cursor = self.__db.cursor()
 
@@ -35,7 +41,9 @@ class SqlExecute(CommandBase):
         if self.__params.batch_count <= 0:
             # まとめてインサート
             rows = [Row(row) for row in context.get_rows()]
-            self.__dbService.execute_queries(self.__cursor, sql, rows)
+            if len(rows) > 0:
+                self.__dbService.execute_queries(self.__cursor, sql, rows)
+                logger.info(f"executed {len(rows)} parameters..")
         else:
             # 指定件数ずつまとめてインサート
             insRows = []
@@ -45,12 +53,15 @@ class SqlExecute(CommandBase):
                     rows = rows + insRows
                     self.__dbService.execute_queries(
                         self.__cursor, sql, insRows)
+                    logger.info(f"executed {len(insRows)} parameters.")
                     insRows = []
                     self.__db.commit()
 
-            rows = rows + insRows
-            self.__dbService.execute_queries(
-                self.__cursor, sql, insRows)
+            if len(insRows) > 0:
+                rows = rows + insRows
+                self.__dbService.execute_queries(
+                    self.__cursor, sql, insRows)
+                logger.info(f"executed {len(insRows)} parameters.")
 
         # 次のコマンドへ引渡し
         context.set_rows(rows)
@@ -66,6 +77,7 @@ class SqlExecute(CommandBase):
             self.__cursor.close()
         except:
             pass
+        logger.info(f"close database {self.__params.db_name}")
 
         self.__db.commit()
         self.__db.close()
@@ -73,5 +85,7 @@ class SqlExecute(CommandBase):
         self.__db = None
 
 
-def new_instance() -> CommandBase:
+def new_instance(loggerInject: Logger) -> CommandBase:
+    global logger
+    logger = loggerInject
     return SqlExecute()

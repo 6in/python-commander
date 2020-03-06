@@ -18,13 +18,13 @@ class Logger:
     def set_properties(props: dict):
         Logger.props = props
 
-    def __init__(self, name=__name__):
+    def __init__(self, name='paqta'):
         self.logger = getLogger(name)
         self.logger.propagate = True
         level = Logger.props["level"]
         self.logger.setLevel(level)
         formatter = Formatter(
-            "[%(asctime)s] [%(process)d] [%(name)s] [%(levelname)s] %(message)s")
+            "[%(asctime)s] [%(process)d] [%(levelname)s] [%(filename)s] [%(funcName)s] %(message)s")
 
         # stdout
         handler = StreamHandler()

@@ -2,6 +2,18 @@ parameters:
   script: サンプルスクリプト
   file_path: ./data/file_list.csv
   echo_target: ADDR1
+  insert_sql: |
+    insert into okinawa(zip_code,zip_code_sub,zip_code_ex,addr1,addr2,addr3,addr4,addr5,addr6)
+    values (
+      /*zip_code*/'',
+      /*zip_code_sub*/'',
+      /*zip_code_ex*/'',
+      /*addr1*/'',
+      /*addr2*/'',
+      /*addr3*/'',
+      /*addr4*/'',
+      /*addr5*/'',
+      /*addr6*/'')
 
 commands:
   - type: xsv_reader
@@ -39,18 +51,7 @@ commands:
       batch_count: 100
       init_sql: |
         delete from okinawa
-      main_sql: |
-        insert into okinawa(zip_code,zip_code_sub,zip_code_ex,addr1,addr2,addr3,addr4,addr5,addr6)
-        values (
-          /*zip_code*/'',
-          /*zip_code_sub*/'',
-          /*zip_code_ex*/'',
-          /*addr1*/'',
-          /*addr2*/'',
-          /*addr3*/'',
-          /*addr4*/'',
-          /*addr5*/'',
-          /*addr6*/'')
+      main_sql: ${insert_sql}
       term_sql: ""
 
   - type: sql_execute
@@ -61,16 +62,5 @@ commands:
       batch_count: 100
       init_sql: |
         delete from okinawa
-      main_sql: |
-        insert into okinawa(zip_code,zip_code_sub,zip_code_ex,addr1,addr2,addr3,addr4,addr5,addr6)
-        values (
-          /*zip_code*/'',
-          /*zip_code_sub*/'',
-          /*zip_code_ex*/'',
-          /*addr1*/'',
-          /*addr2*/'',
-          /*addr3*/'',
-          /*addr4*/'',
-          /*addr5*/'',
-          /*addr6*/'')
+      main_sql: ${insert_sql}
       term_sql: ""

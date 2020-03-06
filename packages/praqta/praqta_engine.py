@@ -23,8 +23,8 @@ def main(config_file: str, script_file: str, extra_args: list):
 
     # ログ設定
     Logger.set_properties(config["logging"])
-    logger = Logger()
-    praqta.logger.set_logger(logger)
+    loggerParent = Logger()
+    logger = loggerParent.logger
 
     logger.info("start")
 

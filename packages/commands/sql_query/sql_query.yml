@@ -1,0 +1,11 @@
+name: template
+comment: コマンドの説明を記入してください
+parameters: # パラメータの仕様を記述します
+  parameter_name: # パラメータ名
+    type: string # データ型を指定(string|int|bool|enum|object)
+    values: [] # enumを指定した時の選択リスト
+    comment: |
+      パラメータの説明を記述します
+    require: yes # パラメータが必須かどうかを指定(yes|no)
+    default: "default" # デフォルト値を設定
+

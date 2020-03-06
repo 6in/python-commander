@@ -2,6 +2,7 @@ from .. import ServiceBase
 from praqta.interface import ApplicationContext, objdict
 import sqlite3
 import psycopg2
+from psycopg2.extras import DictCursor
 import re
 
 from typing import Iterable, cast
@@ -105,10 +106,16 @@ class DatabaseService(ServiceBase):
                 logger.warn(f'{db_type} was not supported.')
         return None
 
+    def cursor(self, db):
+        if type(db) == psycopg2.extensions.connection:
+            return db.cursor(cursor_factory=DictCursor)
+        else:
+            return db.cursor()
+
     def execute_query(self, cursor, sql: str, params: dict) -> Iterable:
         if sql.strip() == '':
             return []
-        if type(cursor) == psycopg2.extensions.cursor:
+        if type(cursor) == psycopg2.extras.DictCursor:
             (newSql, paramsIndex) = parse_2way_sql(sql, '%s')
             queryParams = [params[x] for x in paramsIndex]
             return cursor.execute(newSql, queryParams)
@@ -123,7 +130,7 @@ class DatabaseService(ServiceBase):
         if len(rows) == 0:
             return []
         queryRows = []
-        if type(cursor) == psycopg2.extensions.cursor:
+        if type(cursor) == psycopg2.extras.DictCursor:
             (newSql, paramsIndex) = parse_2way_sql(sql, '%s')
             for row in rows:
                 queryRows.append([row[x] for x in paramsIndex])

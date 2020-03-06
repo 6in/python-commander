@@ -24,7 +24,7 @@ class SqlExecute(CommandBase):
         # アクセスしたいDB名を指定してDBインスタンスを取得
         logger.info(f"open database {self.__params.db_name}")
         self.__db = self.__dbService.open(self.__params.db_name)
-        self.__cursor = self.__db.cursor()
+        self.__cursor = self.__dbService.cursor(self.__db)
 
         # 事前の処理を実施
         for sql in self.__params.init_sql.split(";"):

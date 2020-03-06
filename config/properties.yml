@@ -56,11 +56,15 @@ database_service:
   postgresql:
     type: postgresql
     comment: PostgreSQLへの接続
-    connect: connection
-    user: user
-    password: password
-    init_sqls: []
-    auto_commit: true
+    host: localhost
+    port: 5432
+    database: praqta-dev
+    user: root
+    password: root
+    schema: praqta
+    init_sqls:
+      - ./data/sql/pg-ddl.sql
+    auto_commit: false
     start: lazy
     pool:
       min: 2

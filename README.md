@@ -6,6 +6,13 @@
 pip install -r requirements.txt
 ```
 
+* PostgreSQLと接続するときは、PostgreSQLのライブラリが必要
+
+```
+sudo dnf install postgresql-devel
+```
+
+
 ### SSL settings
 
 ```

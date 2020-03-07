@@ -4,6 +4,8 @@ from praqta.interface import CommandContext, Row
 from typing import cast
 from logging import Logger
 
+import prettytable
+
 logger = cast(Logger, {})
 
 
@@ -15,17 +17,23 @@ class Echo(CommandBase):
         self.__args = context.get_parameters()
 
     def proc(self, context: CommandContext):
-        step = context.get_step()
         targets = self.__args.target_keys
-        print('================================')
-        newRows = []
-        for row in context.get_rows():
-            newRow = Row(row)
-            newRows.append(newRow)
-            for target in targets:
-                value = newRow.get(target)
-                print(f'echo {step}:{target}={value}')
-            print('----------------------------')
+
+        newRows = [Row(row) for row in context.get_rows()]
+        if len(newRows) == 0:
+            return
+
+        if len(targets) == 0:
+            targets = newRows[0].keys()
+
+        table = prettytable.PrettyTable(targets)
+
+        for row in newRows:
+            table.add_row(
+                [row.get(target) for target in targets]
+            )
+
+        print(table)
         context.set_rows(newRows)
 
     def term(self, context: CommandContext):

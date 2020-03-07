@@ -1,11 +1,9 @@
-from typing import cast
 from .. import CommandBase
-from praqta.interface import Row, CommandContext, objdict
-import services
-from services.database.database import DatabaseService
-
-from typing import cast
 from logging import Logger
+from praqta.interface import Row, CommandContext, objdict
+from services.database.database import DatabaseService
+from typing import cast
+import services
 
 logger = cast(Logger, {})
 
@@ -81,7 +79,6 @@ class SqlExecute(CommandBase):
 
         self.__db.commit()
         self.__db.close()
-
         self.__db = None
 
 

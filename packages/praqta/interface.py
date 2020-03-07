@@ -31,14 +31,19 @@ class objdict(dict):
 
         return value
 
+    def get(self, name):
+        if name in self:
+            return self.embed_place_holder(self[name])
+        elif name in self.__props:
+            return self.embed_place_holder(self.__props[name])
+        else:
+            raise AttributeError("No such attribute: " + name)
+
     def get_system_parameter(self, name: str):
         return self.__props[name]
 
     def __getattr__(self, name):
-        if name in self:
-            return self.embed_place_holder(self[name])
-        else:
-            raise AttributeError("No such attribute: " + name)
+        return self.get(name)
 
     def __setattr__(self, name, value):
         self[name] = value
@@ -165,16 +170,19 @@ class Row(object):
         else:
             self.__row = row
 
-    def __getitem__(self, name: str):
-
-        if name in self.__row:
+    def get(self, name: str):
+        keys = self.__row.keys()
+        if name in keys:
             return self.__row[name]
-        elif name.upper() in self.__row:
+        elif name.upper() in keys:
             return self.__row[name.upper()]
-        elif name.lower() in self.__row:
+        elif name.lower() in keys:
             return self.__row[name.lower()]
         else:
             return None
+
+    def __getitem__(self, name: str):
+        self.get(name)
 
     def raw(self) -> dict:
         return self.__row

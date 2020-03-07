@@ -30,7 +30,7 @@ parameters:
     comment: |
       エスケープ用の文字列を指定します。読み込み時、escapechar はそれに引き続く文字の特別な意味を取り除きます。
     require: no
-    default: ";"
+    default: '\'
 
   quotechar:
     type: string
@@ -52,6 +52,12 @@ parameters:
     comment: |
       ヘッダーありならyesを指定します。
       noの場合は、列名は、column_1,column_2という連番がついた名前が設定されます。
+
+  fetch_size:
+    type: int
+    comment: |
+      抽出件数を指定。0以下は全て
+    default: 0
 
 sample: |
   type: xsv_reader

@@ -1,0 +1,60 @@
+parameters:
+  script: サンプルスクリプト
+  file_path: ./data/file_list.csv
+  echo_target: ADDR1
+  insert_sql: |
+    insert into okinawa(zip_code,zip_code_sub,zip_code_ex,addr1,addr2,addr3,addr4,addr5,addr6)
+    values (
+      /*zip_code*/'',
+      /*zip_code_sub*/'',
+      /*zip_code_ex*/'',
+      /*addr1*/'',
+      /*addr2*/'',
+      /*addr3*/'',
+      /*addr4*/'',
+      /*addr5*/'',
+      /*addr6*/'')
+  zip_code: 47205
+
+commands:
+  - type: sql_query
+    comment: クエリを発行する(グルーピング)
+    debug: no
+    parameters:
+      db_name: default
+      query_type: static
+      fetch_size: 1
+      sql: |
+        select zip_code from okinawa
+        where 1=1
+        group by zip_code
+        order by zip_code
+      query_parameters:
+        - zip_code
+
+  - type: sql_query
+    comment: クエリを発行する(グルーピングの結果を利用して動的クエリ)
+    debug: no
+    parameters:
+      db_name: default
+      query_type: dynamic
+      fetch_size: 10
+      init_sql: |
+        delete from okinawa
+      sql: |
+        select * from okinawa
+        where 1=1
+        and zip_code = /*zip_code*/''
+      query_parameters:
+        - zip_code
+
+  - type: echo
+    comment: エコーサンプル１
+    debug: no
+    parameters:
+      target_keys:
+        - id
+        - zip_code
+        - addr1
+        - addr2
+        - addr3

@@ -21,12 +21,13 @@
                 "-c",
                 "config/properties.yml",
                 "-s",
-                "csv-test.yml",
+                "db-to-csv.yml",
                 "-p",
                 "abc=123",
                 "def=456",
                 "debug=false",
-                "jkl=false"
+                "jkl=false",
+                "zip_code=47208"
             ]
         }
     ]

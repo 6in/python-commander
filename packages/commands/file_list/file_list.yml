@@ -1,0 +1,84 @@
+name: file_list
+comment: |
+  ファイル一覧を返却します
+  コマンドを組み合わせて、多段的な検索もできます。
+  (最初にディレクトリのみ探索、その後ディレクトリ内のファイル探索)
+
+parameters: # パラメータの仕様を記述します
+  file_search_key:
+    type: string
+    comment: |
+      ファイル検索を開始するパスを格納しているキー名を指定します
+    require: yes # パラメータが必須かどうかを指定(yes|no)
+    default: "./" # デフォルト値を設定
+
+  search_target:
+    type: enum
+    values:
+      - file
+      - folder
+      - both
+    comment: |
+      検索対象を指定します。
+    require: no
+    default: file
+
+  recursive:
+    type: bool
+    comment: |
+      yes:再帰探索を行うとき
+      no:再起探索を行わない
+    require: no
+    default: yes
+
+  white_list:
+    type: list
+    comment: |
+      ファイルをフィルタリングするための正規表現を複数指定可能
+    require: no
+    default: []
+
+  black_list:
+    type: list
+    comment: |
+      ファイルをスキップするための正規表現を複数指定可能
+    require: no
+    default: []
+
+  attributes:
+    type: list
+    comment: 出力するカラムを指定する(並び順も)
+    require: no
+    default:
+      - path
+      - is_file
+      - parent
+      - name
+      - ext
+      - length
+      - create_date
+      - update_date
+      - encoding
+      - md5
+
+sample: |
+  - type: file_list
+    comment: ファイル一覧を取得
+    parameters:
+      file_search_key: file_path
+      search_target: folder
+      recursive: yes
+      white_list:
+        - ^.+\.py$
+        - ^.+\.yml$
+      black_list:
+        - ^.+\.pyc$
+      attributes:
+        - path
+        - is_file
+        - parent
+        - name
+        - ext_name
+        - length
+        - create_date
+        - update_date

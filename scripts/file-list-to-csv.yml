@@ -1,0 +1,68 @@
+parameters:
+  script: サンプルスクリプト
+  search_path: "."
+
+commands:
+  - type: file_list
+    debug: no
+    comment: フォルダ一覧を取得
+    parameters:
+      file_search_key: search_path
+      search_target: folder
+      recursive: yes
+      white_list:
+        []
+        # - ^.+\.py$
+        # - ^.+\.yml$
+      black_list:
+        - ^__pycache__$
+        # - ^.+\.yml$
+      attributes:
+        - path
+        # - is_file
+        - name
+        # - ext
+        # - length
+        - create_date
+        - update_date
+        # - md5
+
+  - type: file_list
+    debug: no
+    comment: フォルダ一覧で抽出したパスを開始位置にして、ファイル一覧を取得
+    parameters:
+      file_search_key: path
+      search_target: file # fileキーに入っている値を検索フォルダとする
+      recursive: no
+      white_list:
+        []
+        # - ^.+\.py$
+        # - ^.+\.yml$
+      black_list:
+        - ^.+\.pyc$
+        # - ^.+\.yml$
+      attributes:
+        - parent
+        # - path
+        - is_file
+        - name
+        - ext
+        - length
+        - create_date
+        - update_date
+        # - md5
+
+  - type: echo
+    comment: エコーサンプル１
+    debug: no
+    parameters:
+      target_keys: # 全て出力は[]を指定
+        []
+        # - path
+        # - is_file
+        # - parent
+        # - name
+        # - ext
+        # - length
+        # - create_date
+        # - update_date

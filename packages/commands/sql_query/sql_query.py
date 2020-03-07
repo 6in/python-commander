@@ -77,7 +77,8 @@ class SqlQuery(CommandBase):
             row = {}
             if self.__iter_parent == None:
                 # 入力データを保存
-                self.__iter_parent = iter([row for row in context.get_rows()])
+                self.__iter_parent = iter([Row(row)
+                                           for row in context.get_rows()])
                 pass
 
             if self.__iter_current == None:
@@ -95,7 +96,7 @@ class SqlQuery(CommandBase):
                 param = {}
                 for key in self.__params.query_parameters:
                     # パラメータ値は、行データから取得
-                    param[key] = row[key]
+                    param[key] = row.get(key)
 
                 # クエリ実行
                 rows = self.__dbService.execute_query(

@@ -23,7 +23,7 @@ commands:
     parameters:
       db_name: default
       query_type: static
-      fetch_size: 1
+      fetch_size: 0
       sql: |
         select zip_code from okinawa
         where 1=1
@@ -38,7 +38,7 @@ commands:
     parameters:
       db_name: default
       query_type: dynamic
-      fetch_size: 10
+      fetch_size: 0
       init_sql: |
         delete from okinawa
       sql: |
@@ -53,8 +53,9 @@ commands:
     debug: no
     parameters:
       target_keys:
-        - id
-        - zip_code
-        - addr1
-        - addr2
-        - addr3
+        []
+        # - id
+        # - zip_code
+        # - addr1
+        # - addr2
+        # - addr3

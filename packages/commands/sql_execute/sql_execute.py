@@ -41,9 +41,10 @@ class SqlExecute(CommandBase):
             rows = [Row(row) for row in context.get_rows()]
             if len(rows) > 0:
                 self.__dbService.execute_queries(self.__cursor, sql, rows)
+                self.__db.commit()
                 logger.info(f"executed {len(rows)} parameters..")
         else:
-            # 指定件数ずつまとめてインサート
+            # 指定件数ずつまとめて実行
             insRows = []
             for row in context.get_rows():
                 insRows.append(Row(row))

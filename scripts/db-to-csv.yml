@@ -1,6 +1,7 @@
 parameters:
   script: サンプルスクリプト
   file_path: ./data/file_list.csv
+  tsv_path: ./logs/sample.tsv
   echo_target: ADDR1
   insert_sql: |
     insert into okinawa(zip_code,zip_code_sub,zip_code_ex,addr1,addr2,addr3,addr4,addr5,addr6)
@@ -59,3 +60,21 @@ commands:
         # - addr1
         # - addr2
         # - addr3
+
+  - type: xsv_writer
+    comment: CSVファイルへ書き込み
+    debug: no
+    parameters:
+      file_path: ${tsv_path}
+      encoding: utf-8
+      header: yes
+      delimiter: comma
+      doublequote: yes
+      escape_char: '\'
+      quotechar: '"'
+      headers:
+        - zip_code_sub
+        - zip_code_ex
+        - addr1
+        - addr2
+        - addr3

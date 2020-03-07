@@ -1,0 +1,70 @@
+name: xsv_writer
+comment: データをCSV/TSV形式で出力します
+parameters:
+  file_path:
+    type: string
+    comment: |
+      出力先のファイルパスを指定します。
+    require: true
+    default: []
+
+  delimiter:
+    type: enum
+    values:
+      - comma
+      - tab
+      - semi
+    comment: 区切り文字を指定する
+    require: yes
+    default: ","
+
+  doublequote:
+    type: bool
+    comment: |
+      フィールド内のquotecharがその文字自身である場合どのようにクオートするか。True の場合、この文字は二重化。 False の場合、 escapechar は quotechar の前に置かれます。
+    require: false
+    default: true
+
+  escape_char:
+    type: string
+    comment: |
+      エスケープ用の文字列を指定します。読み込み時、escapechar はそれに引き続く文字の特別な意味を取り除きます。
+    require: no
+    default: '\'
+
+  quotechar:
+    type: string
+    comment: |
+      delimiter や quotechar といった特殊文字を含むか、改行文字を含むフィールドをクオートする際に用いられる 1 文字からなる文字	'
+    require: no
+    default: '"'
+
+  encoding:
+    type: enum
+    comment: |
+      読み込むファイルのキャラクタセットを指定
+    values:
+      - utf8
+      - ms932
+    default: utf8
+
+  header:
+    type: bool
+    comment: |
+      yesを指定するとヘッダーを出力します。
+      noを指定するとヘッダー出力をスキップします。
+    require: no
+    default: yes
+
+  headers:
+    type: list
+    comment: |
+      出力するカラムを指定します。すべて出力する場合は[]を指定してください。
+    require: no
+    default: []
+
+sample: |
+  type: xsv_writer
+  comment: xsvファイルを読み込む
+  file_path_key: file_path
+  delimitor: ","

@@ -1,0 +1,56 @@
+name: sql_query
+comment: |
+  SELECT文を発行し、結果を後続に流します。
+  実行タイプは、静的実行と動的実行の2種類があります。
+  静的実行は、コマンド呼出の際に一度実行されます。
+  動的実行は、直前のコマンドから渡された１行ずつの単位で実行れます。
+
+parameters: # パラメータの仕様を記述します
+  db_name:
+    type: string
+    comment: |
+      データベース名を指定します
+    require: yes
+    default: "default"
+
+  main_sql:
+    type: string
+    comment: 実行するSQLを指定します
+    require: yes
+    default: ""
+
+  fetch_size:
+    type: int
+    comment: |
+      取得する件数を指定(0以下なら全件)
+    require: no
+    default: 100
+
+  query_type:
+    type: enum
+    values:
+      - static
+      - dynamic
+    comment: |
+      クエリの実行タイプ指定。
+      static: コマンド実行時に1度だけクエリを発行
+      dynamic: 直前のコマンドから渡された行データをパラメータとしてSQLを実行
+    require: yes
+
+  query_parameters:
+    type: list
+    comment: |
+      実行するクエリーに渡すパラメータ
+    require: no
+    default: 100
+
+  column_case:
+    type: enum
+    values:
+      - lower_snake
+      - upper_snake
+      - lower_camel
+      - upper_camel
+    comment: 実行するSQLを指定します
+    require: no
+    default: lower_snake

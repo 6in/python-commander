@@ -20,10 +20,10 @@ class Echo(CommandBase):
         print('================================')
         newRows = []
         for row in context.get_rows():
-            row = Row(row)
-            newRows.append(row)
+            newRow = Row(row)
+            newRows.append(newRow)
             for target in targets:
-                value = row[target]
+                value = newRow.get(target)
                 print(f'echo {step}:{target}={value}')
             print('----------------------------')
         context.set_rows(newRows)

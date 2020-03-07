@@ -28,6 +28,15 @@ class Echo(CommandBase):
 
         table = prettytable.PrettyTable(targets)
 
+        # アラインの設定
+        for key in targets:
+            val = newRows[0].get(key)
+            table.align[key] = 'l'
+            if type(val) == int:
+                table.align[key] = 'r'
+            if type(val) == bool:
+                table.align[key] = 'c'
+
         for row in newRows:
             table.add_row(
                 [row.get(target) for target in targets]

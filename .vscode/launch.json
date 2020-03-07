@@ -21,7 +21,7 @@
                 "-c",
                 "config/properties.yml",
                 "-s",
-                "db-to-csv.yml",
+                "file-list-to-csv.yml",
                 "-p",
                 "abc=123",
                 "def=456",

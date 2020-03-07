@@ -27,7 +27,7 @@ class XsvReader(CommandBase):
     def proc(self, context: CommandContext):
         # 親データを保存
         if self.__iter_parent == None:
-            self.__iter_parent = iter([row for row in context.get_rows()])
+            self.__iter_parent = iter([Row(row) for row in context.get_rows()])
             self.__has_parent_data = True
 
         # 親から１行取得し、オープンするべきファイルを取得する
@@ -42,7 +42,7 @@ class XsvReader(CommandBase):
         if self.__iter_curent == None:
 
             # ファイルオープン
-            file = open(row[self.__params.file_path_key],
+            file = open(row.get(self.__params.file_path_key),
                         encoding=self.__params.encoding
                         )
             # ファイルオブジェクトを保存(termでクローズ)

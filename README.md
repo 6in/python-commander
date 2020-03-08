@@ -12,6 +12,11 @@ pip install -r requirements.txt
 sudo dnf install postgresql-devel
 ```
 
+* MySQLと接続するときは、MySQLのライブラリが必要
+```
+sudo dnf install mysql-devel
+```
+
 
 ### SSL settings
 

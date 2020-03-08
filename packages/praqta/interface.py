@@ -143,7 +143,7 @@ class ModuleInfo(object):
         # Yamlファイルをロード
         (path, _) = os.path.splitext(self.__file)
         with open(f'{path}.yml', 'r') as f:
-            self.__spec = yaml.load(f)
+            self.__spec = yaml.load(f, Loader=yaml.FullLoader)
             # todo: json schemaによるspecのチェック
 
     def get_spec(self) -> dict:

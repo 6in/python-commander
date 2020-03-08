@@ -27,7 +27,7 @@ class SqlExecute(CommandBase):
         # 事前の処理を実施
         for sql in self.__params.init_sql.split(";"):
             sql = sql.strip()
-            self.__dbService.execute_query(
+            self.__dbService.execute(
                 self.__cursor, sql, context.get_script_parameters())
 
     def proc(self, context: CommandContext):
@@ -40,7 +40,7 @@ class SqlExecute(CommandBase):
             # まとめてインサート
             rows = [Row(row) for row in context.get_rows()]
             if len(rows) > 0:
-                self.__dbService.execute_queries(self.__cursor, sql, rows)
+                self.__dbService.execute_updates(self.__cursor, sql, rows)
                 self.__db.commit()
                 logger.info(f"executed {len(rows)} parameters..")
         else:
@@ -50,7 +50,7 @@ class SqlExecute(CommandBase):
                 insRows.append(Row(row))
                 if len(insRows) == self.__params.batch_count:
                     rows = rows + insRows
-                    self.__dbService.execute_queries(
+                    self.__dbService.execute_updates(
                         self.__cursor, sql, insRows)
                     logger.info(f"executed {len(insRows)} parameters.")
                     insRows = []
@@ -58,7 +58,7 @@ class SqlExecute(CommandBase):
 
             if len(insRows) > 0:
                 rows = rows + insRows
-                self.__dbService.execute_queries(
+                self.__dbService.execute_updates(
                     self.__cursor, sql, insRows)
                 logger.info(f"executed {len(insRows)} parameters.")
 
@@ -69,7 +69,7 @@ class SqlExecute(CommandBase):
 
         for sql in self.__params.term_sql.split(";"):
             sql = sql.strip()
-            self.__dbService.execute_query(
+            self.__dbService.execute(
                 self.__cursor, sql, context.get_script_parameters())
 
         try:

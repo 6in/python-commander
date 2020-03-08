@@ -52,16 +52,17 @@ commands:
         - ${echo_target}
         - addr2
         - addr3
-  # - type: sql_execute
-  #   comment: CSVデータをSqlite3に格納する
-  #   debug: no
-  #   parameters:
-  #     db_name: default
-  #     batch_count: 100
-  #     init_sql: |
-  #       delete from okinawa
-  #     main_sql: ${insert_sql}
-  #     term_sql: ""
+
+  - type: sql_execute
+    comment: CSVデータをSqlite3に格納する
+    debug: no
+    parameters:
+      db_name: default
+      batch_count: 100
+      init_sql: |
+        delete from okinawa
+      main_sql: ${insert_sql}
+      term_sql: ""
   # - type: sql_execute
   #   comment: CSVデータをPostgreSQLに格納する
   #   debug: yes
@@ -72,42 +73,13 @@ commands:
   #       delete from okinawa
   #     main_sql: ${insert_sql}
   #     term_sql: ""
-  # - type: sql_query
-  #   comment: クエリを発行する(グルーピング)
+  # - type: sql_execute
+  #   comment: CSVデータをMySQLに格納する
   #   debug: no
   #   parameters:
-  #     db_name: default
-  #     query_type: static
-  #     fetch_size: 1
-  #     sql: |
-  #       select zip_code from okinawa
-  #       where 1=1
-  #       group by zip_code
-  #       order by zip_code
-  #     query_parameters:
-  #       - zip_code
-  # - type: sql_query
-  #   comment: クエリを発行する(グルーピングの結果を利用して動的クエリ)
-  #   debug: no
-  #   parameters:
-  #     db_name: default
-  #     query_type: dynamic
-  #     fetch_size: 10
+  #     db_name: mysql
+  #     batch_count: 100
   #     init_sql: |
   #       delete from okinawa
-  #     sql: |
-  #       select * from okinawa
-  #       where 1=1
-  #       and zip_code = /*zip_code*/''
-  #     query_parameters:
-  #       - zip_code
-  # - type: echo
-  #   comment: エコーサンプル１
-  #   debug: no
-  #   parameters:
-  #     target_keys:
-  #       - id
-  #       - zip_code
-  #       - addr1
-  #       - addr2
-  #       - addr3
+  #     main_sql: ${insert_sql}
+  #     term_sql: ""

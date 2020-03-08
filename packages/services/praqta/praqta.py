@@ -22,12 +22,16 @@ def main(script_path: str, config_parameters: dict):
     script['parameters'].update(config_parameters)
     context.set_script_parameters(script['parameters'])
 
+    logger.info(f"start script '{script_path}'")
+
     debug_mode = False
     if 'debug' in script['parameters']:
         if type(script['parameters']['debug']) == bool:
             debug_mode = script['parameters']['debug'] == True
 
-            # スクリプトからコマンド群を順番に生成
+    logger.info(f"debug mode = {debug_mode}")
+
+    # スクリプトからコマンド群を順番に生成
     for command in commands:
 
         command = objdict(command)
@@ -35,6 +39,7 @@ def main(script_path: str, config_parameters: dict):
             continue
 
         # コマンド名からコマンドインスタンスを作成
+        logger.info(f"create command {command.type}")
         commandInstance = factory.new_instance(command.type, logger)
 
         # コマンド引数の仕様を設定
@@ -45,6 +50,7 @@ def main(script_path: str, config_parameters: dict):
         context.set_parameters(command.parameters)
 
         # コマンドの初期化
+        logger.info(f"init command {command.type}")
         commandInstance.init(context)
 
         # コマンドリストへ追加
@@ -54,15 +60,21 @@ def main(script_path: str, config_parameters: dict):
     context.set_rows([script['parameters']])
 
     # コマンド実行処理
+    logger.info(f"start command loop")
+    commandDictRows = [objdict(cmd) for cmd in commands]
     while context.is_stop() == False:
         step = 1
         for commandInstance in commandList:
+            cmdInfo = commandDictRows[step-1]
             context.set_step(step)
             # コマンド実行
+            logger.debug(
+                f"execute command '{cmdInfo.type}' : {cmdInfo.comment}")
             commandInstance.proc(context)
             step += 1
 
     # コマンド終了処理
+    logger.info(f"finalize command")
     for commandInstance in commandList:
         commandInstance.term(context)
 

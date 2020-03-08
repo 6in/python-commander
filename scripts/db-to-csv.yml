@@ -2,20 +2,7 @@ parameters:
   script: サンプルスクリプト
   file_path: ./data/file_list.csv
   tsv_path: ./logs/sample.tsv
-  echo_target: ADDR1
-  insert_sql: |
-    insert into okinawa(zip_code,zip_code_sub,zip_code_ex,addr1,addr2,addr3,addr4,addr5,addr6)
-    values (
-      /*zip_code*/'',
-      /*zip_code_sub*/'',
-      /*zip_code_ex*/'',
-      /*addr1*/'',
-      /*addr2*/'',
-      /*addr3*/'',
-      /*addr4*/'',
-      /*addr5*/'',
-      /*addr6*/'')
-  zip_code: 47205
+  zip_code: 100
 
 commands:
   - type: sql_query
@@ -30,8 +17,13 @@ commands:
         where 1=1
         group by zip_code
         order by zip_code
-      query_parameters:
-        - zip_code
+      query_parameters: []
+
+  - type: echo
+    comment: エコーサンプル１
+    debug: yes
+    parameters:
+      target_keys: []
 
   - type: sql_query
     comment: クエリを発行する(グルーピングの結果を利用して動的クエリ)
@@ -68,7 +60,7 @@ commands:
       file_path: ${tsv_path}
       encoding: utf-8
       header: yes
-      delimiter: comma
+      delimiter: tab
       doublequote: yes
       escape_char: '\'
       quotechar: '"'

@@ -70,7 +70,7 @@ class SqlQuery(CommandBase):
                     return
                 else:
                     # イテレータを保存
-                    self.__iter_current = iter(rows)
+                    self.__iter_current = rows
 
         # 動的SQL実行
         if self.__params.query_type == 'dynamic':
@@ -79,7 +79,6 @@ class SqlQuery(CommandBase):
                 # 入力データを保存
                 self.__iter_parent = iter([Row(row)
                                            for row in context.get_rows()])
-                pass
 
             if self.__iter_current == None:
                 # 保存済みのデータから１行フェッチ
@@ -110,7 +109,7 @@ class SqlQuery(CommandBase):
                     self.__has_current_data = False
                     return
                 else:
-                    self.__iter_current = iter(rows)
+                    self.__iter_current = rows
 
         # ここまで来たのは、fetch_size > 0の場合
         retRows = []

@@ -61,15 +61,11 @@ def main(script_path: str, config_parameters: dict):
 
     # コマンド実行処理
     logger.info(f"start command loop")
-    commandDictRows = [objdict(cmd) for cmd in commands]
     while context.is_stop() == False:
         step = 1
         for commandInstance in commandList:
-            cmdInfo = commandDictRows[step-1]
             context.set_step(step)
             # コマンド実行
-            logger.debug(
-                f"execute command '{cmdInfo.type}' : {cmdInfo.comment}")
             commandInstance.proc(context)
             step += 1
 
@@ -102,6 +98,9 @@ class PraqtaService(ServiceBase):
                 # 結果を格納
                 parameters['context'] = context
                 break
+            else:
+                # スクリプトロード失敗
+                logger.error(f'script file not exists. => {file_path}')
 
     def stop(self, context: ApplicationContext):
         pass

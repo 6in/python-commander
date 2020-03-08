@@ -18,4 +18,12 @@ create table if not exists okinawa (
     addr4 TEXT    NOT NULL,
     addr5 TEXT    NOT NULL,
     addr6 TEXT    NOT NULL
-)
+);
+
+create table if not exists text_file (
+    id          INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    line_no     INTEGER NOT NULL,
+    path        TEXT NOT NULL,
+    is_empty    INTEGER NOT NULL,
+    line        TEXT NOT NULL
+);

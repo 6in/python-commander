@@ -1,0 +1,96 @@
+parameters:
+  script: |
+    ファイルを検索し、ファイルを読み込んで、データベースのテーブルに格納する
+  search_path: "."
+  path: "./data/sql/mysql-ddl.sql"
+  insert_sql: |
+    insert into text_file(path,line_no,is_empty,line)
+    values(/*path*/'', /*line_no*/0, /*is_empty*/0, /*line*/'')
+
+commands:
+  - type: file_list
+    debug: no
+    comment: フォルダ一覧を取得
+    parameters:
+      file_search_key: search_path
+      search_target: folder
+      recursive: yes
+      white_list:
+        []
+        # - ^.+\.py$
+        # - ^.+\.yml$
+      black_list:
+        - ^__pycache__$
+        - ^\..+$
+        # - ^.+\.yml$
+      attributes:
+        - path
+        # - is_file
+        - name
+        # - ext
+        # - length
+        - create_date
+        - update_date
+        # - md5
+
+  - type: file_list
+    debug: no
+    comment: フォルダ一覧で抽出したパスを開始位置にして、ファイル一覧を取得
+    parameters:
+      file_search_key: path
+      search_target: file # fileキーに入っている値を検索フォルダとする
+      recursive: no
+      white_list:
+        - ^.+\.py$
+        - ^.+\.yml$
+        - ^.+\.sql$
+      black_list:
+        - ^.+\.pyc$
+        # - ^.+\.yml$
+      attributes:
+        # - parent
+        - path
+        - is_file
+        - name
+        - ext
+        - length
+        - create_date
+        - update_date
+        # - md5
+
+  - type: text_reader
+    comment: テキストリード
+    debug: no
+    parameters:
+      file_path_key: path
+      encoding: utf8
+      skip_empty: no
+      attributes:
+        # - file_path
+        - line_no
+        - is_empty
+        - line
+      untabify: yes
+      untabify_ext:
+        ".py": 4
+        ".yml": 2
+        ".java": 4
+        ".sql": 8
+
+  - type: sql_execute
+    comment: CSVデータをSqlite3に格納する
+    debug: no
+    parameters:
+      db_name: default
+      batch_count: 100
+      init_sql: |
+        delete from text_file
+      main_sql: ${insert_sql}
+      term_sql: ""
+
+  - type: echo
+    comment: エコーサンプル１
+    debug: no
+    parameters:
+      target_keys: # 全て出力は[]を指定
+        []

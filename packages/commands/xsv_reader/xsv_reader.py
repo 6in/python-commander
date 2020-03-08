@@ -36,6 +36,7 @@ class XsvReader(CommandBase):
                 row = next(self.__iter_parent)
             except StopIteration:
                 self.__has_parent_data = False
+                self.__iter_parent = None
                 context.set_rows([])
                 return
 

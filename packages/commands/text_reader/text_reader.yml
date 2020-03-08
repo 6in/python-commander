@@ -1,0 +1,54 @@
+name: text_reader
+comment: テキストファイルを読み込みます
+parameters:
+  file_path_key:
+    type: string
+    comment: |
+      ファイルパスを格納しているキーを指定します。
+    require: true
+    default: file_path
+
+  encoding:
+    type: enum
+    comment: |
+      読み込むファイルのキャラクタセットを指定
+    values:
+      - utf8
+      - ms932
+
+  attributes:
+    type: list
+    comment: |
+      出力する属性を指定します
+    default:
+      - file_path
+      - line_no
+      - is_empty
+      - line
+
+  skip_empty:
+    type: bool
+    comment: |
+      空行もしくは空白のみの行をスキップ 
+      yes : スキップ
+      no : そのまま
+    default: yes
+
+  untabify:
+    type: bool
+    comment: |
+      タブ文字をスペースに変換する
+      yes: 変換する
+      no: 変換しない
+    default: yes
+
+  untabify_ext:
+    type: object
+    comment: |
+      untabifyをYesにした時の設定。
+      拡張子毎のタブ文字を空白へ変換するスペースサイズを指定
+    default:
+      ".py": 4
+      ".yml": 2
+      ".java": 4
+      ".sql": 4

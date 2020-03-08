@@ -6,7 +6,7 @@ parameters:
     comment: |
       ファイルパスを格納しているキーを指定します。
     require: true
-    default: []
+    default: file_path
 
   delimiter:
     type: enum

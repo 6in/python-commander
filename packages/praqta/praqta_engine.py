@@ -13,7 +13,7 @@ def read_config(file_path: str) -> dict:
     Configファイル読み込み
     """
     with open(file_path, 'r') as f:
-        return yaml.load(f)
+        return yaml.load(f, Loader=yaml.FullLoader)
 
 
 def main(config_file: str, script_file: str, extra_args: list):

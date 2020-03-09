@@ -39,14 +39,12 @@ def get_md5(path: str) -> str:
     return h.hexdigest()
 
 
-class Template(CommandBase):
+class FileList(CommandBase):
     def __init__(self):
         """
         コンストラクタ
         メンバー変数の初期化をここで行います。
         """
-        self.__has_data = True
-
         self.__iter_parent = None
         self.__iter_curent = None
         self.__has_parent_data = True
@@ -190,4 +188,4 @@ def new_instance(loggerInject: Logger) -> CommandBase:
     global logger
     logger = loggerInject
 
-    return Template()
+    return FileList()

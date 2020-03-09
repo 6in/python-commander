@@ -1,0 +1,58 @@
+name: process
+comment: |
+  外部プロセスを実行し、標準出力に出力された文字列を取り込んで、
+  次のコマンドへ渡します。
+parameters: # パラメータの仕様を記述します
+  command_line:
+    type: string
+    comment: |
+      外部コマンドの実行するコマンドラインを記述します。
+      直前データの１行からパラメータを取得して実行するときは、
+      {キー名}を、コマンドに埋め込んでください。
+      例）
+      command_line: 'ls -la {path}'
+    require: yes
+    default: "la -la {path}"
+
+  working_folder:
+    type: string
+    comment: 実行時のディレクトリを指定します
+    require: no
+    default: "./"
+
+  fetch_size:
+    type: int
+    comment: |
+      1サイクルで取得する件数を指定します。
+      0以下だと、プロセス終了までのすべての出力データを取得します。
+    require: yes
+    default: 100
+
+  split:
+    type: bool
+    comment: |
+      読み込んだ行を、分割するかを指定します
+    require: no
+    default: no
+
+  split_reg:
+    type: string
+    comment: |
+      分割したときの、区切り文字を正規表現で指定
+    require: no
+    default: '\s+'
+
+  column_name:
+    type: string
+    comment: |
+      分割したそれぞれにつけるフィールド名
+      サフィックスは、1から採番される
+    require: no
+    default: col_
+
+  timestamp:
+    type: bool
+    comment: |
+      タイムスタンプを結果に追加する
+    require: no
+    default: yes

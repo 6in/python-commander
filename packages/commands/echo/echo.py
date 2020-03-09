@@ -23,8 +23,14 @@ class Echo(CommandBase):
         if len(newRows) == 0:
             return
 
+        rowColumns = [len(r.keys()) for r in newRows]
+        index = rowColumns.index(max(rowColumns))
+
+        if len(newRows) == 0:
+            return
+
         if len(targets) == 0:
-            targets = newRows[0].keys()
+            targets = newRows[index].keys()
 
         table = prettytable.PrettyTable(targets)
 

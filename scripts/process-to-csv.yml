@@ -1,0 +1,47 @@
+parameters:
+  script: サンプルスクリプト
+  path: ./
+  tsv_path: "./logs/sample.tsv"
+
+commands:
+  - type: process
+    comment: サンプルデータを返却
+    debug: no
+    parameters:
+      command_line: "ls -la {path}"
+      # command_line: "ping localhost"
+      split: yes
+      split_reg: \s+
+      column_name: col_
+      working_folder: .
+      fetch_size: 0
+      timestamp: yes
+
+  - type: xsv_writer
+    comment: CSVファイルへ書き込み
+    debug: no
+    parameters:
+      file_path: ${tsv_path}
+      encoding: utf-8
+      header: yes
+      delimiter: tab
+      doublequote: yes
+      escape_char: '\'
+      quotechar: '"'
+      headers:
+        - timestamp
+        - col_1
+        - col_2
+        - col_3
+        - col_4
+        - col_5
+        - col_6
+        - col_7
+        - col_8
+        - col_9
+
+  - type: echo
+    comment: エコーサンプル１
+    debug: no
+    parameters:
+      target_keys: []

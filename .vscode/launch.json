@@ -105,6 +105,25 @@
                 "jkl=false",
                 "zip_code=47208"
             ]
+        },
+        {
+            "name": "praqta-process",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceRoot}/praqta_main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "-c",
+                "config/properties.yml",
+                "-s",
+                "process-to-csv.yml",
+                "-p",
+                "abc=123",
+                "def=456",
+                "debug=false",
+                "jkl=false",
+                "zip_code=47208"
+            ]
         }
     ]
 }

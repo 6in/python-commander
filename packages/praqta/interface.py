@@ -171,6 +171,8 @@ class Row(object):
             self.__row = row
 
     def get(self, name: str):
+        if self.__row == None:
+            return None
         keys = self.__row.keys()
         if name in keys:
             return self.__row[name]
@@ -188,4 +190,6 @@ class Row(object):
         return self.__row
 
     def keys(self):
+        if self.__row == None:
+            return []
         return self.__row.keys()

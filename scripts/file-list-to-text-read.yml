@@ -65,6 +65,7 @@ commands:
       file_path_key: path
       encoding: utf8
       skip_empty: no
+      fetch_size: 10
       attributes:
         # - file_path
         - line_no

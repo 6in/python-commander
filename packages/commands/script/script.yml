@@ -1,0 +1,41 @@
+name: script
+comment: Pythonスクリプトを実行して、データ処理を記述します
+parameters: # パラメータの仕様を記述します
+  script:
+    type: string
+    comment: Pthonスクリプトを記述します。
+    require: true
+    default: |
+      def proc(rows):
+          newRows = []
+          for row in rows:
+              row.name = 'abc'
+              row.field = 'ghi'
+              newRows.append(dict(newRow))
+          return newRows
+
+  modules:
+    type: object
+    comment: スクリプト内で利用するモジュールを記述します。
+    require: no
+    default:
+      re: "re"
+      pd: "pandas"
+
+sample: |
+  - type: script
+    comment: Pythonスクリプト処理
+    debug: no
+    parameters:
+      script: |
+        def proc(rows):
+            newRows = []
+            for row in rows:  # 辞書属性は、.属性名でアクセスできます。
+                row.name = 'abc'
+                row.field = 'ghi'
+                newRows.append(dict(newRow))
+            return newRows
+      
+      modules:
+        re: "re"
+        pd: "pandas"

@@ -1,0 +1,49 @@
+parameters:
+  script: サンプルスクリプト
+  file_path: ./data/okinawa.csv
+  echo_target: ADDR1
+  zip_code: 47205
+
+commands:
+  - type: xsv_reader
+    comment: CSVデータ読み込み(子)
+    debug: no
+    parameters:
+      file_path_key: file_path
+      encoding: utf-8
+      header: yes
+      delimiter: comma
+      doublequote: yes
+      escape_char: '\'
+      quotechar: '"'
+      fetch_size: 10
+
+  - type: script
+    comment: Pythonスクリプト処理
+    debug: no
+    parameters:
+      script: |
+        def proc(rows):
+            reg = re.compile(r'竹富町')
+            # pandasのテスト
+            df = pd.DataFrame([ dict(row) for row in rows],index=range(len(rows)))
+            print(df)
+
+            # ループ処理
+            for row in rows:  # 辞書属性は、.属性名でアクセスできます。
+                row.name = 'abc'
+                row.field = 'ghi'
+                row['is_竹富町'] = False
+                if reg.findall(row.addr5) : 
+                  row['is_竹富町'] = True
+            return rows
+
+      modules:
+        re: "re"
+        pd: "pandas"
+
+  - type: echo
+    comment: エコーサンプル１
+    debug: yes
+    parameters:
+      target_keys: []

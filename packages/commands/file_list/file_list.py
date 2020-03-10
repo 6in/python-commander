@@ -46,7 +46,7 @@ class FileList(CommandBase):
         メンバー変数の初期化をここで行います。
         """
         self.__iter_parent = None
-        self.__iter_curent = None
+        self.__iter_current = None
         self.__has_parent_data = True
         self.__has_current_data = True
 
@@ -84,7 +84,7 @@ class FileList(CommandBase):
             self.__has_parent_data = True
 
         # 親から１行取得し、オープンするべきファイルを取得する
-        if self.__iter_curent == None:
+        if self.__iter_current == None:
             try:
                 row = Row(next(self.__iter_parent))
             except StopIteration:
@@ -93,7 +93,7 @@ class FileList(CommandBase):
                 context.set_rows([])
                 return
 
-        if self.__iter_curent == None:
+        if self.__iter_current == None:
 
             # 検索開始
             file_search_key = self.__params.file_search_key

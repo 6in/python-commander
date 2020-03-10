@@ -52,3 +52,9 @@ parameters:
       ".yml": 2
       ".java": 4
       ".sql": 4
+
+  fetch_size:
+    type: int
+    comment: 一度に抽出する件数を指定
+    require: no
+    default: 0

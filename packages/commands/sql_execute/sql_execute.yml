@@ -31,3 +31,13 @@ parameters:
       に引き渡すことが可能です。
     require: no
     default: ""
+
+  batch_count:
+    type: int
+    comment: |
+      一度に更新する件数を指定します
+    require: no
+    default: 0
+
+sample: |
+  サンプル

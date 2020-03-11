@@ -5,6 +5,7 @@ from typing import cast
 import commands as factory
 import os.path
 import yaml
+from . arg_checker import validate_spec, ArgSpec
 
 logger = cast(Logger, None)
 
@@ -42,9 +43,19 @@ def main(script_path: str, config_parameters: dict):
         logger.info(f"create command {command.type}")
         commandInstance = factory.new_instance(command.type, logger)
 
-        # コマンド引数の仕様を設定
-        context.set_parameterspec(
-            factory.get_command_arg_spec(command.type))
+        # コマンド引数の仕様を取得する
+        spec = factory.get_command_arg_spec(command.type)
+        # コマンドの仕様を記述した情報からパラメータのバリデーション情報を取得
+        try:
+            logger.info(f'{command.type}:{command.comment}: start validate')
+            argSpec = validate_spec(command.type, spec, logger)
+        except Exception as e:
+            logger.error(f'{command.type}:{command.comment}: {e}')
+
+        context.set_parameterspec(argSpec)
+
+        # 引数仕様に則ったパラメータ定義をしているか確認
+        argSpec.validate(command.parameters)
 
         # コマンド引数を設定
         context.set_parameters(command.parameters)

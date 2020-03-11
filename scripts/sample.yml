@@ -5,11 +5,7 @@ commands:
   - type: sample
     comment: サンプルデータを返却
     debug: no
-    parameters:
-      target_keys:
-        - p1
-        - p2
-        - p4
+    parameters: {}
 
   - type: echo
     comment: エコーサンプル１

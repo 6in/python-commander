@@ -9,3 +9,5 @@ parameters: # パラメータの仕様を記述します
     require: yes # パラメータが必須かどうかを指定(yes|no)
     default: "default" # デフォルト値を設定
 
+sample: |
+  サンプルコード

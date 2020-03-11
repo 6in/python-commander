@@ -47,6 +47,7 @@ parameters:
       - utf8
       - ms932
     default: utf8
+    requie: yes
 
   header:
     type: bool

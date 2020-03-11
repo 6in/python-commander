@@ -12,14 +12,17 @@ parameters:
     type: enum
     comment: |
       読み込むファイルのキャラクタセットを指定
+    require: yes
     values:
       - utf8
       - ms932
+    default: utf8
 
   attributes:
     type: list
     comment: |
       出力する属性を指定します
+    require: yes
     default:
       - file_path
       - line_no
@@ -32,6 +35,7 @@ parameters:
       空行もしくは空白のみの行をスキップ 
       yes : スキップ
       no : そのまま
+    require: yes
     default: yes
 
   untabify:
@@ -41,6 +45,7 @@ parameters:
       yes: 変換する
       no: 変換しない
     default: yes
+    require: yes
 
   untabify_ext:
     type: object
@@ -52,9 +57,13 @@ parameters:
       ".yml": 2
       ".java": 4
       ".sql": 4
+    require: yes
 
   fetch_size:
     type: int
     comment: 一度に抽出する件数を指定
     require: no
     default: 0
+
+sample: |
+  サンプル

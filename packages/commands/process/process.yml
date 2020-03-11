@@ -56,3 +56,6 @@ parameters: # パラメータの仕様を記述します
       タイムスタンプを結果に追加する
     require: no
     default: yes
+
+sample: |
+  サンプル

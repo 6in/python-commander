@@ -13,7 +13,7 @@ parameters: # パラメータの仕様を記述します
     require: yes
     default: "default"
 
-  main_sql:
+  sql:
     type: string
     comment: 実行するSQLを指定します
     require: yes

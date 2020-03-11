@@ -22,7 +22,7 @@ commands:
     debug: no
     parameters:
       file_path: ${tsv_path}
-      encoding: utf-8
+      encoding: utf8
       header: yes
       delimiter: tab
       doublequote: yes

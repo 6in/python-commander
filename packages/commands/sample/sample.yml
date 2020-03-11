@@ -1,14 +1,15 @@
 name: Sample
 comment: サンプルコマンド
 parameters:
-  []
-  # param1:
-  #   type: str
-  #   comment: パラメータ1
-  #   require: true
-  #   default: abc
-  # param2:
-  #   type: int
-  #   comment: パラメータ2
-  #   require: true
-  #   default: 123
+  param1:
+    type: string
+    comment: パラメータ1
+    require: no
+    default: abc
+  param2:
+    type: int
+    comment: パラメータ2
+    require: no
+    default: 123
+sample: |
+  サンプルデータを出力します。

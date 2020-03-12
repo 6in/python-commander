@@ -183,6 +183,9 @@ class Row(object):
         else:
             return None
 
+    def set(self, key: str, value):
+        self.__row[key] = value
+
     def __getitem__(self, name: str):
         self.get(name)
 

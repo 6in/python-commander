@@ -87,6 +87,7 @@ class RegExp(CommandBase):
             # 正規表現マッチング
             pos = None
             matchResult = reg.match(line)
+
             if matchResult:
                 # マッチ結果を保存
                 row.set(match_result_key, True)
@@ -107,6 +108,9 @@ class RegExp(CommandBase):
                         d = matchResult.groupdict()
                         for key in d.keys():
                             newRow[key] = d[key]
+            elif self.__params.skip_unmatch:
+                continue
+
             row.set('pos', pos)
 
             # 結果をマージ

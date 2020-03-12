@@ -26,6 +26,8 @@ commands:
       pattern: ^.+(?P<taketomi>竹富)(?P<machi>町)$
       # 検索対象の文字列が入っているキーを指定
       target_key: addr5
+      # アンマッチはスキップする
+      skip_unmatch: no
       # 検索オプション
       match_options:
         - verbose

@@ -50,6 +50,12 @@ parameters: # パラメータの仕様を記述します
       key1: 1
       key3: 3
 
+  skip_unmatch:
+    type: bool
+    comment: 正規表現にマッチしなかった場合は、行出力をスキップするか？
+    require: yes
+    default: yes
+
   output_keys:
     type: dict
     comment: 出力するカラムを指定する。デフォルト値も指定

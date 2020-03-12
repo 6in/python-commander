@@ -1,0 +1,66 @@
+parameters:
+  script: サンプルスクリプト
+  file_path: ./data/okinawa.csv
+  echo_target: ADDR1
+  zip_code: 47205
+
+commands:
+  - type: xsv_reader
+    comment: CSVデータ読み込み(子)
+    debug: no
+    parameters:
+      file_path_key: file_path
+      encoding: utf8
+      header: yes
+      delimiter: comma
+      doublequote: yes
+      escape_char: '\'
+      quotechar: '"'
+      fetch_size: 10
+
+  - type: regexp
+    comment: 正規表現でマッチした結果を行に追加する
+    debug: no
+    parameters:
+      # 正規表現パターン
+      pattern: ^.+(?P<taketomi>竹富)(?P<machi>町)$
+      # 検索対象の文字列が入っているキーを指定
+      target_key: addr5
+      # 検索オプション
+      match_options:
+        - verbose
+        - multiline
+        - dotall
+        - ignorecase
+      # マッチした結果(True/False)を格納するキー
+      match_result_key: is_竹富町
+      # グループの抽出タイプ
+      # グループインデックスを指定して抽出
+      extract_type: index
+      # グループのパターン名をキーとして抽出
+      # extract_type: dict
+
+      # extract_type: indexの時の、グループインデックスと、キー名のマップ
+      group_key_map:
+        # グループ1の値を、taketomiに格納
+        taketomi: 1
+        # グループ2の値を、machiに格納
+        machi: 2
+      # 出力するキーとデフォルト
+      output_keys:
+        rule_name: 竹富町
+        taketomi: "<empty>"
+        machi: "<empty>"
+
+  - type: echo
+    comment: エコーサンプル１
+    debug: no
+    parameters:
+      target_keys:
+        - zip_code
+        - addr5
+        - is_竹富町
+        - pos
+        - rule_name
+        - taketomi
+        - machi

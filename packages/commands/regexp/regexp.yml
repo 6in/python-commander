@@ -1,0 +1,63 @@
+name: regexp
+comment: 正規表現でパターンマッチを行い、マッチングの判定およびマッチグループの抽出をおこないます。
+parameters: # パラメータの仕様を記述します
+  target_key:
+    type: string
+    comment: 正規表現のマッチングを行うキーを指定します
+    require: yes
+    default: line
+
+  pattern:
+    type: string
+    comment: 正規表現パターンを記述
+    require: yes
+    default: .+
+
+  match_options:
+    type: list
+    comment: 正規表現の検索オプションを指定します。
+    require: yes
+    default:
+      - verbose
+      - multiline
+      - dotall
+
+  match_result_key:
+    type: string
+    comment: マッチング結果(bool)を格納するキー名を指定します。
+    require: yes
+    default: match_result
+
+  extract_type:
+    type: enum
+    comment: |
+      マッチグループの抽出タイプ
+      index: グループ番号: フィールド名
+      dict: 正規表現についているパターン名から取得
+    values:
+      - index
+      - dict
+    require: no
+    default: index
+
+  group_key_map:
+    type: dict
+    comment: |
+      group_extract_typeがindexの時の設定
+      マッチンググループの値をキーに格納する
+    require: no
+    default:
+      key1: 1
+      key3: 3
+
+  output_keys:
+    type: dict
+    comment: 出力するカラムを指定する。デフォルト値も指定
+    require: yes
+    default:
+      key1: default
+      key2: default
+      key3: default
+
+sample: |
+  サンプルコード

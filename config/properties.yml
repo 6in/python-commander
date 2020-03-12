@@ -52,40 +52,39 @@ database_service:
       min: 2
       max: 4
       keep_alive: "select 1"
-
-  postgresql:
-    type: postgresql
-    comment: PostgreSQLへの接続
-    host: localhost
-    port: 5432
-    database: praqta-dev
-    user: root
-    password: root2
-    schema: praqta
-    init_sqls:
-      - ./data/sql/pg-ddl.sql
-    auto_commit: false
-    start: lazy
-    pool:
-      min: 2
-      max: 4
-      keep_alive: "select 1"
-
-  mysql:
-    type: mysql
-    comment: MySQLへの接続
-    host: 127.0.0.1
-    port: 3306
-    database: praqta-dev
-    user: root
-    password: password
-    use_unicode: yes
-    charset: utf8
-    init_sqls:
-      - ./data/sql/mysql-ddl.sql
-    auto_commit: false
-    start: lazy
-    pool:
-      min: 2
-      max: 4
-      keep_alive: "select 1"
+  #
+  # postgresql:
+  #   type: postgresql
+  #   comment: PostgreSQLへの接続
+  #   host: localhost
+  #   port: 5432
+  #   database: praqta-dev
+  #   user: root
+  #   password: root2
+  #   schema: praqta
+  #   init_sqls:
+  #     - ./data/sql/pg-ddl.sql
+  #   auto_commit: false
+  #   start: lazy
+  #   pool:
+  #     min: 2
+  #     max: 4
+  #     keep_alive: "select 1"
+  # mysql:
+  #   type: mysql
+  #   comment: MySQLへの接続
+  #   host: 127.0.0.1
+  #   port: 3306
+  #   database: praqta-dev
+  #   user: root
+  #   password: password
+  #   use_unicode: yes
+  #   charset: utf8
+  #   init_sqls:
+  #     - ./data/sql/mysql-ddl.sql
+  #   auto_commit: false
+  #   start: lazy
+  #   pool:
+  #     min: 2
+  #     max: 4
+  #     keep_alive: "select 1"

@@ -1,5 +1,6 @@
+comment: サンプルスクリプト
+
 parameters:
-  script: サンプルスクリプト
   search_path: "."
 
 commands:

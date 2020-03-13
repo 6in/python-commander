@@ -1,5 +1,5 @@
+comment: サンプルスクリプト
 parameters:
-  script: サンプルスクリプト
   file_path: ./data/okinawa.csv
   echo_target: ADDR1
   zip_code: 47205

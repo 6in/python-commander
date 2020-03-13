@@ -1,6 +1,7 @@
+comment: |
+  ファイルを検索し、ファイルを読み込んで、データベースのテーブルに格納する
+
 parameters:
-  script: |
-    ファイルを検索し、ファイルを読み込んで、データベースのテーブルに格納する
   search_path: "."
   path: "./data/sql/mysql-ddl.sql"
   insert_sql: |

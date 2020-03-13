@@ -1,5 +1,6 @@
+comment: サンプルスクリプト
+
 parameters:
-  script: サンプルスクリプト
   path: ./
   tsv_path: "./logs/sample.tsv"
 

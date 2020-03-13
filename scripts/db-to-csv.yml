@@ -1,5 +1,6 @@
+comment: サンプルスクリプト
+
 parameters:
-  script: サンプルスクリプト
   file_path: ./data/file_list.csv
   tsv_path: ./logs/sample.tsv
   zip_code: 100

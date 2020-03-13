@@ -1,5 +1,6 @@
+comment: サンプルスクリプト
+
 parameters:
-  script: サンプルスクリプト
   file_path: ./data/okinawa.csv
   echo_target: ADDR1
   zip_code: 47205
@@ -22,7 +23,7 @@ commands:
     comment: Pythonスクリプト処理
     debug: no
     parameters:
-      script: |
+      comment: |
         def proc(rows):
             reg = re.compile(r'竹富町')
             # pandasのテスト

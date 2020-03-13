@@ -1,5 +1,7 @@
+comment: サンプルコマンドからデータを取得して、内容をコンソールに出力する
+
 parameters:
-  script: サンプルスクリプト
+  param1: sample
 
 commands:
   - type: sample

@@ -61,7 +61,7 @@ class ApplicationContext(object):
 
     def read_config(self, path: str):
         with open(path, 'r') as f:
-            self.__config = yaml.load(f)
+            self.__config = yaml.load(f, Loader=yaml.FullLoader)
         return self
 
     def get_config(self, section: str) -> dict:

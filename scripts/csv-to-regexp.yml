@@ -29,11 +29,11 @@ commands:
       # アンマッチはスキップする
       skip_unmatch: no
       # 検索オプション
-      match_options:
-        - verbose
-        - multiline
-        - dotall
-        - ignorecase
+      # match_options:
+      #   - verbose
+      #   - multiline
+      #   - dotall
+      #   - ignorecase
       # マッチした結果(True/False)を格納するキー
       match_result_key: is_竹富町
       # グループの抽出タイプ

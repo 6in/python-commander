@@ -16,7 +16,7 @@ parameters: # パラメータの仕様を記述します
   match_options:
     type: list
     comment: 正規表現の検索オプションを指定します。
-    require: yes
+    require: no
     default:
       - verbose
       - multiline
@@ -25,7 +25,7 @@ parameters: # パラメータの仕様を記述します
   match_result_key:
     type: string
     comment: マッチング結果(bool)を格納するキー名を指定します。
-    require: yes
+    require: no
     default: match_result
 
   extract_type:
@@ -37,7 +37,7 @@ parameters: # パラメータの仕様を記述します
     values:
       - index
       - dict
-    require: no
+    require: yes
     default: index
 
   group_key_map:
@@ -53,7 +53,7 @@ parameters: # パラメータの仕様を記述します
   skip_unmatch:
     type: bool
     comment: 正規表現にマッチしなかった場合は、行出力をスキップするか？
-    require: yes
+    require: no
     default: yes
 
   output_keys:

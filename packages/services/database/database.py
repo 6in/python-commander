@@ -124,8 +124,10 @@ def parse_2way_sql(sql: str, esc_char: str = '?') -> Iterable:
 
 
 class DatabaseService(ServiceBase):
+
     def init(self, config: dict):
         self.__dbconfig = config
+        self.__has_mysql = False
 
         # 設定されているDB情報をもとに接続を試してみる
         # 接続できなかったら例外をスローして終了
@@ -162,7 +164,10 @@ class DatabaseService(ServiceBase):
             if db_type == 'postgresql':
                 return open_postgresql(db_conf)
             if db_type == 'mysql':
-                return open_mysql(db_conf)
+                db = open_mysql(db_conf)
+                if db:
+                    self.__has_mysql = True
+                return db
             else:
                 logger.warn(f'{db_type} was not supported.')
         return None
@@ -170,7 +175,7 @@ class DatabaseService(ServiceBase):
     def cursor(self, db):
         if type(db) == psycopg2.extensions.connection:
             return db.cursor(cursor_factory=DictCursor)
-        if type(db) == MySQLdb.connections.Connection:
+        if self.__has_mysql and type(db) == MySQLdb.connections.Connection:
             return db.cursor(MySQLdb.cursors.DictCursor)
         else:
             return db.cursor()

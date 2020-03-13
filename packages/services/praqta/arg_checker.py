@@ -1,4 +1,4 @@
-from praqta.interface import Row
+from praqta.interface import Row, objdict
 
 
 class ArgSpec(object):
@@ -25,6 +25,18 @@ class ArgSpec(object):
             if not type(value) in [dict, object]:
                 raise Exception(f'{self.name}の設定値は 辞書型を指定してください。')
 
+        if self.type == 'string':
+            if type(value) != str:
+                raise Exception(f'{self.name}の設定値は 文字列を指定してください。')
+
+        if self.type == 'int':
+            if not type(value) in [int, float]:
+                raise Exception(f'{self.name}の設定値は、 数値を指定してください。')
+
+        if self.type == 'bool':
+            if type(value) != bool:
+                raise Exception(f'{self.name}の設定値は、bool(yes/no)を指定してください。')
+
         return True
 
 
@@ -40,6 +52,14 @@ class ArgSpecs(object):
         self.specs[spec.name] = spec
 
     def validate(self, params):
+
+        # パラメータ定義のrequire: noのデフォルト値を取得する
+        defaultValue = {}
+        for key in self.specs.keys():
+            spec = self.specs[key]
+            if spec.require == False:
+                if not key in params:
+                    params[key] = spec.default
 
         r = Row(params)
 

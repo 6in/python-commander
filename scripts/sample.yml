@@ -10,11 +10,11 @@ commands:
   - type: sample
     comment: サンプルデータを返却(Json)
     debug: no
-    parameters: 
+    parameters:
       data_type: json
       data: |
         [
-          {p1: "abc", "p2": 123, "p3": true, "type": "json"},
+          {"p1": "abc", "p2": 123, "p3": true, "type": "json"},
           {"p1": "def", "p2": 456, "p3": false, "type": "json"},
           {"p1": "ghi", "p2": 789, "p3": true, "type": "json"},
           {"p1": "abc", "p2": 123, "p3": true, "type": "json"}
@@ -33,7 +33,7 @@ commands:
   - type: sample
     comment: サンプルデータを返却(Yaml)
     debug: no
-    parameters: 
+    parameters:
       data_type: yaml
       data: |
         - p1: abc
@@ -62,7 +62,7 @@ commands:
   - type: sample
     comment: サンプルデータを返却
     debug: no
-    parameters: 
+    parameters:
       data_type: csv
       data: |
         p1,p2,p4,type
@@ -83,9 +83,9 @@ commands:
   - type: sample
     comment: サンプルデータを返却(Object)
     debug: no
-    parameters: 
+    parameters:
       data_type: object
-      data: 
+      data:
         - { p1: "abc", p2: 123, p3: true, type: "object" }
         - { p1: "def", p2: 456, p3: false, type: "object" }
         - { p1: "ghi", p2: 789, p3: true, type: "object" }

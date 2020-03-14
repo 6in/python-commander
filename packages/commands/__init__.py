@@ -77,16 +77,22 @@ class IteratorCommandBase(CommandBase, metaclass=ABCMeta):
         # 親から１行取得する
         if self.__iter_current == None:
             try:
-                self.__parent_row = Row(next(self.__iter_parent))
+                self.__parent_row = {}
+                if self.__has_parent_data:
+                    self.__parent_row = Row(next(self.__iter_parent))
             except StopIteration:
                 self.__has_parent_data = False
-                self.__iter_parent = None
+                # self.__iter_parent = None
                 context.set_rows([])
                 return
 
         if self.__iter_current == None:
             # このコマンドが提供するデータの取得処理を行う。
             # 例）ファイルをオープンして、データを読み込む
+            if not self.__has_parent_data:
+                self.__has_current_data = False
+                context.set_rows([])
+                return
 
             # データ取得処理
             newRows = []
@@ -98,11 +104,13 @@ class IteratorCommandBase(CommandBase, metaclass=ABCMeta):
         retRows = []
         while True:
             try:
+                row = {}
                 row = next(self.__iter_current)
             except StopIteration:
                 self.__iter_current = None
                 self.__has_current_data = False
-                break
+                context.set_rows(retRows)
+                return
 
             # 返却データを追加
             retRows.append(self.create_new_row(row))

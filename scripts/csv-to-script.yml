@@ -23,7 +23,7 @@ commands:
     comment: Pythonスクリプト処理
     debug: no
     parameters:
-      comment: |
+      script: |
         def proc(rows):
             reg = re.compile(r'竹富町')
             # pandasのテスト
@@ -45,6 +45,6 @@ commands:
 
   - type: echo
     comment: エコーサンプル１
-    debug: yes
+    debug: no
     parameters:
       target_keys: []

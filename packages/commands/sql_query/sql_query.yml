@@ -42,7 +42,7 @@ parameters: # パラメータの仕様を記述します
     comment: |
       実行するクエリーに渡すパラメータ
     require: no
-    default: 100
+    default: []
 
   column_case:
     type: enum

@@ -45,6 +45,12 @@ parameters: # パラメータの仕様を記述します
     require: no
     default: []
 
+  fetch_size:
+    type: int
+    comment: 1回で抽出する件数。0件だとすべて
+    require: yes
+    default: 0
+
   attributes:
     type: list
     comment: 出力するカラムを指定する(並び順も)
@@ -61,7 +67,7 @@ parameters: # パラメータの仕様を記述します
       - encoding
       - md5
 
-sample: |
+sample:
   - type: file_list
     comment: ファイル一覧を取得
     parameters:
@@ -82,3 +88,4 @@ sample: |
         - length
         - create_date
         - update_date
+      fetch_size: 0

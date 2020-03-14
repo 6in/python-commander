@@ -72,13 +72,19 @@ def main(script_path: str, config_parameters: dict):
 
     # コマンド実行処理
     logger.info(f"start command loop")
+    loop = 1
     while context.is_stop() == False:
         step = 1
+        if loop > 1:
+            context.set_rows([])
+
         for commandInstance in commandList:
             context.set_step(step)
             # コマンド実行
             commandInstance.proc(context)
             step += 1
+
+        loop += 1
 
     # コマンド終了処理
     logger.info(f"finalize command")

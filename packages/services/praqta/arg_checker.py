@@ -21,8 +21,12 @@ class ArgSpec(object):
             if type(value) != list:
                 raise Exception(f'{self.name}の設定値は list型を指定してください。')
 
-        if self.type in ['dict', 'object']:
-            if not type(value) in [dict, object]:
+        if self.type in ['dict']:
+            if not type(value) in [dict]:
+                raise Exception(f'{self.name}の設定値は 辞書型を指定してください。')
+
+        if self.type in ['object']:
+            if not type(value) in [str, int, float, bool, dict, list, object]:
                 raise Exception(f'{self.name}の設定値は 辞書型を指定してください。')
 
         if self.type == 'string':

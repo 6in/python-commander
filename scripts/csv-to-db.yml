@@ -1,4 +1,6 @@
-comment: サンプルスクリプト
+comment: |
+  CSVファイルを読み込み、データベースに格納するサンプル
+  CSVを多段で読み込み、データベースのテーブルに書き込む
 
 parameters:
   file_path: ./data/file_list.csv
@@ -49,7 +51,6 @@ commands:
     debug: no
     parameters:
       target_keys:
-        - file_path
         - ${echo_target}
         - addr2
         - addr3

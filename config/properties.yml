@@ -14,7 +14,7 @@ parameters:
 services:
   - database
   - praqta
-  - http
+  # - http
 
 # praqtaサービス
 praqta_service:

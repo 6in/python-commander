@@ -1,7 +1,6 @@
 comment: サンプルスクリプト
 
 parameters:
-  file_path: ./data/file_list.csv
   tsv_path: ./logs/sample.tsv
   zip_code: 100
 
@@ -12,13 +11,15 @@ commands:
     parameters:
       db_name: default
       query_type: static
-      fetch_size: 0
+      fetch_size: 1
       sql: |
         select zip_code from okinawa
         where 1=1
+        and zip_code = /*zip_code*/''
         group by zip_code
         order by zip_code
-      query_parameters: []
+      query_parameters:
+        - zip_code
 
   - type: echo
     comment: エコーサンプル１
@@ -32,7 +33,7 @@ commands:
     parameters:
       db_name: default
       query_type: dynamic
-      fetch_size: 0
+      fetch_size: 10
       sql: |
         select * from okinawa
         where 1=1

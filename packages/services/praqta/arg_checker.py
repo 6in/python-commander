@@ -10,37 +10,72 @@ class ArgSpec(object):
         self.require = require
         self.default = default
 
+    def get_value_type(self, value) -> str:
+        dataType = type(value)
+        if dataType == list:
+            return 'list'
+
+        if dataType == dict:
+            return 'dict'
+
+        if dataType == str:
+            return 'string'
+
+        if dataType == int:
+            return 'bool'
+
+        if dataType == bool:
+            return 'bool'
+
+        if dataType == object:
+            return 'object'
+
     def validate(self, value) -> bool:
 
-        if self.type == 'enum':
+        if type(self.type) == str:
+            self.check_type(self.type, value)
+
+        if type(self.type) == list:
+
+            # 許容するデータ型のリスト
+            valueType = self.get_value_type(value)
+            hint = ",".join(self.type)
+            if not valueType in self.type:
+                raise Exception(f'{self.name}のデータは {hint}いずれかのデータ型を指定ください。')
+
+            self.check_type(valueType, value)
+
+        return True
+
+    def check_type(self, typeName: str, value: str):
+        if typeName == 'enum':
             if not value in self.values:
                 hint = ','.join(self.values)
                 raise Exception(f'{self.name}の設定値は {hint}から選択してください。')
 
-        if self.type == 'list':
+        if typeName == 'list':
             if type(value) != list:
                 raise Exception(f'{self.name}の設定値は list型を指定してください。')
 
-        if self.type in ['dict']:
+        if typeName in ['dict']:
             if not type(value) in [dict]:
                 raise Exception(f'{self.name}の設定値は 辞書型を指定してください。')
 
-        if self.type in ['object']:
+        if typeName in ['object']:
             if not type(value) in [str, int, float, bool, dict, list, object]:
                 raise Exception(f'{self.name}の設定値は 辞書型を指定してください。')
 
-        if self.type == 'string':
+        if typeName == 'string':
             if type(value) != str:
                 raise Exception(f'{self.name}の設定値は 文字列を指定してください。')
 
-        if self.type == 'int':
+        if typeName == 'int':
             if not type(value) in [int, float]:
                 raise Exception(f'{self.name}の設定値は、 数値を指定してください。')
 
-        if self.type == 'bool':
+        if typeName == 'bool':
             if type(value) != bool:
                 raise Exception(f'{self.name}の設定値は、bool(yes/no)を指定してください。')
-
         return True
 
 
@@ -106,9 +141,17 @@ def validate_spec(commandName: str, specDict: dict, logger) -> dict:
         if param.get('type') == None:
             logger.error(f'{commandName}.yml: {name}.typeが指定されていません')
 
-        if not param.get('type') in ['string', 'int', 'bool', 'enum', 'list', 'object', 'dict']:
-            logger.error(
-                f'{commandName}.yml: {name}.type は、string,int,bool,enum,list,dict,objectの何れかを指定してください')
+        checkTypes = []
+        if type(param.get('type')) == str:
+            checkTypes.append(param.get('type'))
+        elif type(param.get('type')) == list:
+            checkTypes = param.get('type')
+
+        if len(checkTypes) > 0:
+            for typeValue in checkTypes:
+                if not typeValue in ['string', 'int', 'bool', 'enum', 'list', 'object', 'dict']:
+                    logger.error(
+                        f'{commandName}.yml: {name}.type は、string,int,bool,enum,list,dict,objectの何れかを指定してください')
 
         if param.get('type') == 'enum':
             if param.get('values') == None:

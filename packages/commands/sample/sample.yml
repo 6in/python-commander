@@ -17,7 +17,9 @@ parameters:
     require: yes
     default: json
   data:
-    type: object
+    type:
+      - string
+      - list
     comment: サンプルデータ
     require: yes
     default: |
@@ -32,7 +34,7 @@ sample:
   - type: sample
     comment: サンプルデータを返却(Json)
     debug: no
-    parameters: 
+    parameters:
       data_type: json
       data: |
         [

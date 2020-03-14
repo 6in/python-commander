@@ -82,7 +82,7 @@ class IteratorCommandBase(CommandBase, metaclass=ABCMeta):
                     self.__parent_row = Row(next(self.__iter_parent))
             except StopIteration:
                 self.__has_parent_data = False
-                # self.__iter_parent = None
+                self.__iter_parent = None
                 context.set_rows([])
                 return
 
@@ -113,7 +113,11 @@ class IteratorCommandBase(CommandBase, metaclass=ABCMeta):
                 return
 
             # 返却データを追加
-            retRows.append(self.create_new_row(row))
+            newRow = self.create_new_row(row)
+            if newRow == None:
+                continue
+
+            retRows.append(newRow)
 
             # フェッチサイズに達したらwhileループ終了
             if self.__fetch_size > 0 and len(retRows) == self.__fetch_size:

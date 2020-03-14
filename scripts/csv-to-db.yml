@@ -44,16 +44,13 @@ commands:
       doublequote: yes
       escape_char: '\'
       quotechar: '"'
-      fetch_size: 0
+      fetch_size: 100
 
   - type: echo
     comment: エコーサンプル１
     debug: no
     parameters:
-      target_keys:
-        - ${echo_target}
-        - addr2
-        - addr3
+      target_keys: []
 
   - type: sql_execute
     comment: CSVデータをSqlite3に格納する

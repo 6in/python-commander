@@ -46,17 +46,22 @@ parameters:
     values:
       - utf8
       - ms932
+    require: no
+    default: ms932
 
   header:
     type: bool
     comment: |
       ヘッダーありならyesを指定します。
       noの場合は、列名は、column_1,column_2という連番がついた名前が設定されます。
+    require: no
+    default: yes
 
   fetch_size:
     type: int
     comment: |
       抽出件数を指定。0以下は全て
+    require: no
     default: 0
 
 sample: |

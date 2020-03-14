@@ -100,3 +100,13 @@ commands:
         - p1
         - p2
         - p4
+  #
+  # - type: sample
+  #   comment: エラー確認用(dictを指定してエラーがでること)
+  #   debug: yes
+  #   parameters:
+  #     data_type: object
+  #     data:
+  #       p1: abc
+  #       p2: 123
+  #       p4: True

@@ -1,19 +1,102 @@
-comment: サンプルコマンドからデータを取得して、内容をコンソールに出力する
+comment: |
+  サンプルコマンドからデータを取得して、内容をコンソールに出力する
+  サンプルデータで記述できるバリエーションは4タイプです。
+  テキストで記述するcsv,json,yamlと、
+  Yamlデータの記述でList構造で記述するobjectです。
 
-parameters:
-  param1: sample
+parameters: {}
 
 commands:
   - type: sample
-    comment: サンプルデータを返却
+    comment: サンプルデータを返却(Json)
     debug: no
-    parameters: {}
+    parameters: 
+      data_type: json
+      data: |
+        [
+          {p1: "abc", "p2": 123, "p3": true, "type": "json"},
+          {"p1": "def", "p2": 456, "p3": false, "type": "json"},
+          {"p1": "ghi", "p2": 789, "p3": true, "type": "json"},
+          {"p1": "abc", "p2": 123, "p3": true, "type": "json"}
+        ]
 
   - type: echo
     comment: エコーサンプル１
     debug: no
     parameters:
       target_keys:
+        - type
+        - p1
+        - p2
+        - p4
+
+  - type: sample
+    comment: サンプルデータを返却(Yaml)
+    debug: no
+    parameters: 
+      data_type: yaml
+      data: |
+        - p1: abc
+          p2: 123
+          p4: true
+          type: yaml-text
+        - p1: def
+          p2: 456
+          p4: true
+          type: yaml-text
+        - p1: def
+          p2: 123
+          p4: true
+          type: yaml-text
+
+  - type: echo
+    comment: エコーサンプル１
+    debug: no
+    parameters:
+      target_keys:
+        - type
+        - p1
+        - p2
+        - p4
+
+  - type: sample
+    comment: サンプルデータを返却
+    debug: no
+    parameters: 
+      data_type: csv
+      data: |
+        p1,p2,p4,type
+        abc,123,true,csv
+        def,456,false,csv
+        ghi,789,true,csv
+
+  - type: echo
+    comment: エコーサンプル１
+    debug: no
+    parameters:
+      target_keys:
+        - type
+        - p1
+        - p2
+        - p4
+
+  - type: sample
+    comment: サンプルデータを返却(Object)
+    debug: no
+    parameters: 
+      data_type: object
+      data: 
+        - { p1: "abc", p2: 123, p3: true, type: "object" }
+        - { p1: "def", p2: 456, p3: false, type: "object" }
+        - { p1: "ghi", p2: 789, p3: true, type: "object" }
+        - { p1: "abc", p2: 123, p3: true, type: "object" }
+
+  - type: echo
+    comment: エコーサンプル１
+    debug: no
+    parameters:
+      target_keys:
+        - type
         - p1
         - p2
         - p4

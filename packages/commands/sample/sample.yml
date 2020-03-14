@@ -1,15 +1,43 @@
 name: Sample
 comment: サンプルコマンド
 parameters:
-  param1:
-    type: string
-    comment: パラメータ1
-    require: no
-    default: abc
-  param2:
-    type: int
-    comment: パラメータ2
-    require: no
-    default: 123
-sample: |
-  サンプルデータを出力します。
+  data_type:
+    type: enum
+    comment: |
+      サンプルデータの記述タイプを指定します
+      * csv: テキストで簡易的なCSV形式で記述します
+      * json: テキストでJson形式でデータを記述します
+      * yaml: テキストでYaml形式をデータを記述します
+      * object: Yamlデータ構造でデータを記述します
+    values:
+      - csv
+      - yaml
+      - json
+      - object
+    require: yes
+    default: json
+  data:
+    type: object
+    comment: サンプルデータ
+    require: yes
+    default: |
+      [
+        {"p1": "abc", "p2": 123, "p3": true},
+        {"p1": "def", "p2": 456, "p3": false},
+        {"p1": "ghi", "p2": 789, "p3": true},
+        {"p1": "abc", "p2": 123, "p3": true},
+      ]
+
+sample:
+  - type: sample
+    comment: サンプルデータを返却(Json)
+    debug: no
+    parameters: 
+      data_type: json
+      data: |
+        [
+          {"p1": "abc", "p2": 123, "p3": true, "type": "json"},
+          {"p1": "def", "p2": 456, "p3": false, "type": "json"},
+          {"p1": "ghi", "p2": 789, "p3": true, "type": "json"},
+          {"p1": "abc", "p2": 123, "p3": true, "type": "json"}
+        ]

@@ -180,13 +180,21 @@ class DatabaseService(ServiceBase):
         else:
             return db.cursor()
 
+    def is_sqlite_cursor(self, cursor) -> bool:
+        ret = True
+        if type(cursor) == psycopg2.extras.DictCursor:
+            ret = False
+        if self.__has_mysql and type(cursor) == MySQLdb.cursors.DictCursor:
+            ret = False
+        return ret
+
     def execute(self, cursor, sql: str, params: dict) -> Iterable:
         if sql.strip() == '':
             return []
 
-        rep = "?"
-        if type(cursor) in [psycopg2.extras.DictCursor, MySQLdb.cursors.DictCursor]:
-            rep = '%s'
+        rep = '%s'
+        if self.is_sqlite_cursor(cursor):
+            rep = '?'
 
         (newSql, paramsIndex) = parse_2way_sql(sql, rep)
 
@@ -201,9 +209,9 @@ class DatabaseService(ServiceBase):
         if sql.strip() == '':
             return []
 
-        rep = "?"
-        if type(cursor) in [psycopg2.extras.DictCursor, MySQLdb.cursors.DictCursor]:
-            rep = '%s'
+        rep = '%s'
+        if self.is_sqlite_cursor(cursor):
+            rep = '?'
 
         (newSql, paramsIndex) = parse_2way_sql(sql, rep)
 
@@ -221,9 +229,9 @@ class DatabaseService(ServiceBase):
         if len(rows) == 0:
             return []
         queryRows = []
-        rep = '?'
-        if type(cursor) in [psycopg2.extras.DictCursor, MySQLdb.cursors.DictCursor]:
-            rep = '%s'
+        rep = '%s'
+        if self.is_sqlite_cursor(cursor):
+            rep = '?'
 
         (newSql, paramsIndex) = parse_2way_sql(sql, rep)
         for row in rows:

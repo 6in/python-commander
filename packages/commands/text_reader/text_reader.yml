@@ -14,9 +14,9 @@ parameters:
       読み込むファイルのキャラクタセットを指定
     require: yes
     values:
-      - utf8
+      - utf-8
       - ms932
-    default: utf8
+    default: utf-8
 
   attributes:
     type: list

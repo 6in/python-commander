@@ -25,7 +25,7 @@ commands:
     debug: no
     parameters:
       file_path_key: file_path
-      encoding: utf8
+      encoding: utf-8
       header: yes
       delimiter: tab
       doublequote: yes
@@ -38,7 +38,7 @@ commands:
     debug: no
     parameters:
       file_path_key: file_path
-      encoding: utf8
+      encoding: utf-8
       header: yes
       delimiter: comma
       doublequote: yes

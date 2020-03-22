@@ -2,6 +2,10 @@ name: process
 comment: |
   外部プロセスを実行し、標準出力に出力された文字列を取り込んで、
   次のコマンドへ渡します。
+  出力された行は、stdoutという列に出力されますが、
+  区切り文字を指定して、1行を分割し、それぞれを格納することも
+  できます。
+  
 parameters: # パラメータの仕様を記述します
   command_line:
     type: string
@@ -16,7 +20,9 @@ parameters: # パラメータの仕様を記述します
 
   working_folder:
     type: string
-    comment: 実行時のディレクトリを指定します
+    comment: |
+      プロセスの実行時のディレクトリを指定します。
+      command_lineと同様に、{キー名}で入力データを指定できます。
     require: no
     default: "./"
 
@@ -57,5 +63,28 @@ parameters: # パラメータの仕様を記述します
     require: no
     default: yes
 
-sample: |
-  サンプル
+sample: 
+  - type: process
+    comment: lsコマンドを実行
+    debug: no
+    parameters:
+      command_line: "ls -la {path}"
+      split: yes
+      split_reg: \s+
+      column_name: col_
+      working_folder: .
+      fetch_size: 0
+      timestamp: yes
+
+  - type: process
+    comment: lsコマンドを実行。作業フォルダをレコードから取得
+    debug: no
+    parameters:
+      command_line: "ls -la {path}"
+      split: yes
+      split_reg: \s+
+      column_name: col_
+      working_folder: {parent}
+      fetch_size: 0
+      timestamp: yes
+      

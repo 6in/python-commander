@@ -64,7 +64,7 @@ commands:
     debug: no
     parameters:
       file_path_key: path
-      encoding: utf8
+      encoding: utf-8
       skip_empty: no
       fetch_size: 10
       attributes:

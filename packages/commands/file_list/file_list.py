@@ -9,19 +9,20 @@ import os
 import os.path
 import re
 import typing
+from chardet.universaldetector import UniversalDetector
 
 logger = cast(Logger, {})
 
 
 class RowIterator(object):
-    """
+    '''
     行返却用イテレータ。利用しない場合は削除してください。
-    """
+    '''
 
     def __init__(self, rows, params):
-        """
+        '''
         コンストラクタ        
-        """
+        '''
         self.__params = params
         if type(rows) == list:
             self.__rows = iter(rows)
@@ -78,18 +79,18 @@ def get_md5(path: str) -> str:
 
 class FileList(IteratorCommandBase):
     def __init__(self):
-        """
+        '''
         コンストラクタ
         メンバー変数の初期化をここで行います。
-        """
+        '''
         super().__init__()
 
     def init(self, context: CommandContext):
-        """
+        '''
         スクリプト読み込み後に、利用するコマンドの初期化時に呼び出れます。
         context.get_parameters()で、スクリプトに記述されたコマンドパラメータ
         を取得することができます。
-        """
+        '''
         super().init(context)
         # パラメータを取得する( self.__params.プロパティ名 でアクセス可能)
         self.__params = context.get_parameters()
@@ -102,6 +103,18 @@ class FileList(IteratorCommandBase):
         self.__black_filters = [re.compile(x)
                                 for x in self.__params.black_list]
 
+        self.__detector = UniversalDetector()
+
+    def get_encode(self, path: str) -> str:
+        self.__detector.reset()
+        with open(path, 'rb') as f:
+            for line in f.readlines():
+                self.__detector.feed(line)
+                if self.__detector.done:
+                    break
+            self.__detector.close()
+            return self.__detector.result['encoding']
+
     def get_new_data(self, parent_row):
         # 検索開始
         file_search_key = self.__params.file_search_key
@@ -110,9 +123,9 @@ class FileList(IteratorCommandBase):
         # 検索対象取得
         search_target = self.__params.search_target
         if search_target == 'folder':
-            search_path = f"{search_path}{os.sep}**{os.sep}"
+            search_path = f'{search_path}{os.sep}**{os.sep}'
         else:
-            search_path = f"{search_path}{os.sep}**"
+            search_path = f'{search_path}{os.sep}**'
 
         self.__is_file_only = search_target == 'file'
 
@@ -160,20 +173,25 @@ class FileList(IteratorCommandBase):
         if len(ext) > 0:
             ext = ext[1:].lower()
 
-        md5 = ""
-        if "md5" in self.__params.attributes:
+        md5 = ''
+        if is_file and 'md5' in self.__params.attributes:
             md5 = get_md5(path)
 
+        encoding = ''
+        if is_file and 'encoding' in self.__params.attributes:
+            encoding = self.get_encode(path)
+
         localRow = {
-            "path": path,
-            "parent": parent,
-            "name": name,
-            "is_file": is_file,
-            "ext": ext,
-            "length": length,
-            "create_date": create_date,
-            "update_date": update_date,
-            "md5": md5
+            'path': path,
+            'parent': parent,
+            'name': name,
+            'is_file': is_file,
+            'ext': ext,
+            'length': length,
+            'create_date': create_date,
+            'update_date': update_date,
+            'md5': md5,
+            'encoding': encoding,
         }
 
         newRow = {}
@@ -183,10 +201,10 @@ class FileList(IteratorCommandBase):
         return newRow
 
     def term(self, context: CommandContext):
-        """
+        '''
         コマンド終了処理は、スクリプトの実行処理が終る直前に呼び出されます。
         initメソッド時にオープンしたリソースなどをクローズしてください
-        """
+        '''
         pass
 
 

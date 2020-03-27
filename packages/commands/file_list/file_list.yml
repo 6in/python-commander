@@ -4,6 +4,22 @@ comment: |
   コマンドを組み合わせて、多段的な検索もできます。
   (最初にディレクトリのみ探索、その後ディレクトリ内のファイル探索)
 
+  出力できる項目は、以下の10個あり、attributesプロパティで出力項目を選択できます。
+  * path
+  * is_file
+  * parent
+  * name
+  * ext
+  * length
+  * create_date
+  * update_date
+  * encoding
+  * md5
+
+  md5/encodingを指定すると、ファイルを実際に読み込む処理を行うため、
+  ファイル検索処理の処理時間も遅くなりますので、不要な場合は、
+  attributesプロパティから外した方が良いでしょう。
+
 parameters: # パラメータの仕様を記述します
   file_search_key:
     type: string
@@ -69,7 +85,7 @@ parameters: # パラメータの仕様を記述します
 
 sample:
   - type: file_list
-    comment: ファイル一覧を取得
+    comment: file_pathに入っているディレクトリを起点にフォルダを再帰的に検索する
     parameters:
       file_search_key: file_path
       search_target: folder
@@ -88,4 +104,29 @@ sample:
         - length
         - create_date
         - update_date
+        - encoding
+        - md5
+      fetch_size: 0
+  - type: file_list
+    comment: file_pathに入っているディレクトリを起点にフォルダを再帰的に検索する
+    parameters:
+      file_search_key: file_path
+      search_target: file
+      recursive: no
+      white_list:
+        - ^.+\.py$
+        - ^.+\.yml$
+      black_list:
+        - ^.+\.pyc$
+      attributes:
+        - path
+        - is_file
+        - parent
+        - name
+        - ext_name
+        - length
+        - create_date
+        - update_date
+        - encoding
+        - md5
       fetch_size: 0

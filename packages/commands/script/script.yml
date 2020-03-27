@@ -1,5 +1,22 @@
 name: script
-comment: Pythonスクリプトを実行して、データ処理を記述します
+comment: |
+  Pythonスクリプトを実行して、データ処理を記述します。
+  複雑なフィルタ処理や、項目変換処理等をPythonスクリプトで記述できます。
+  スクリプトコマンド初期化時に、モジュールのインポートする事も可能です。
+  modulesプロパティに、
+  モジュールエイリアス名： モジュール名
+  という形式で、インポートしたいモジュール名を指定します。
+
+  modules:
+    pd: "pandas"
+
+  という記述であれば、
+  ```
+  import pandas as pd
+  ```
+  とインポートされた状態で、`pd`がスクリプト内で
+  利用できます。
+
 parameters: # パラメータの仕様を記述します
   script:
     type: string
@@ -15,14 +32,14 @@ parameters: # パラメータの仕様を記述します
           return newRows
 
   modules:
-    type: object
+    type: dict
     comment: スクリプト内で利用するモジュールを記述します。
     require: no
     default:
       re: "re"
       pd: "pandas"
 
-sample: |
+sample:
   - type: script
     comment: Pythonスクリプト処理
     debug: no
@@ -35,7 +52,7 @@ sample: |
                 row.field = 'ghi'
                 newRows.append(dict(newRow))
             return newRows
-      
+
       modules:
         re: "re"
         pd: "pandas"

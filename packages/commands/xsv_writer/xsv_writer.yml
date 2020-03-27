@@ -44,9 +44,9 @@ parameters:
     comment: |
       読み込むファイルのキャラクタセットを指定
     values:
-      - utf8
+      - utf-8
       - ms932
-    default: utf8
+    default: utf-8
     requie: yes
 
   header:

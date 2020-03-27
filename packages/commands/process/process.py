@@ -77,6 +77,7 @@ class Process(IteratorCommandBase):
         # コマンドラインを取得
         command_line = self.__params.command_line
         command_line = command_line.format(**parent_row.raw())
+        working_dir = self.__params.working_folder.format(**parent_row.raw())
 
         # ここでプロセスが (非同期に) 開始する.
         self.__proc = subprocess.Popen(
@@ -84,7 +85,7 @@ class Process(IteratorCommandBase):
             shell=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
-            cwd=self.__params.working_folder)
+            cwd=working_dir)
 
         return RowIterator(iter(self.__proc.stdout.readline, b''), self.__params)
 

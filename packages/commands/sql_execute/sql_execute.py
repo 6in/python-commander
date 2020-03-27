@@ -32,6 +32,7 @@ class SqlExecute(CommandBase):
 
     def proc(self, context: CommandContext):
         rows = []
+
         sql = self.__params.main_sql
 
         # Rowラッパーに変換
@@ -54,6 +55,7 @@ class SqlExecute(CommandBase):
                         self.__cursor, sql, insRows)
                     logger.info(f"executed {len(insRows)} parameters.")
                     insRows = []
+
                     self.__db.commit()
 
             if len(insRows) > 0:
@@ -66,12 +68,11 @@ class SqlExecute(CommandBase):
         context.set_rows(rows)
 
     def term(self, context: CommandContext):
-
+        # 事後のSQL処理を実行
         for sql in self.__params.term_sql.split(";"):
             sql = sql.strip()
             self.__dbService.execute(
                 self.__cursor, sql, context.get_script_parameters())
-
         try:
             self.__cursor.close()
         except:

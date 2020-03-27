@@ -7,10 +7,13 @@ parameters:
     require: true
     default: []
 
-sample: |
-  type: Echo
-  comment: 行単位で、指定したカラムの内容を表示
-  target_keys:
-    - key1
-    - key2
-    - key3
+sample: 
+  - type: echo
+    comment: キーを指定して内容を表示する
+    target_keys:
+      - key1
+      - key2
+      - key3
+  - type: echo
+    comment: すべてのキーを表示する
+    target_keys: []

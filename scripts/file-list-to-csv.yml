@@ -52,8 +52,9 @@ commands:
         - length
         - create_date
         - update_date
-        # - md5
-      fetch_size: 1
+        - md5
+        - encoding
+      fetch_size: 0
 
   - type: echo
     comment: エコーサンプル１

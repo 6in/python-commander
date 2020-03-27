@@ -10,5 +10,5 @@
     "terminal.integrated.env.windows": {
         "PYTHONPATH": "${env:PYTHONPATH};${workspaceRoot}/packages"
     },
-    "python.pythonPath": "/home/ohya/.pyenv/versions/3.8.1/bin/python"
+    "python.pythonPath": "/home/ohya/.pyenv/versions/3.8.1/bin/python3.8"
 }

@@ -1,5 +1,16 @@
 name: sql_execute
-comment: 読み込んだ行をパラメータとして、SQLを発光する
+comment: |
+  主にinsert/update/delete文を対象としたSQLの発行を行うコマンドです。
+  スクリプト初期化時にはinit_sql,スクリプト終了時にはterm_sqlに記述されている
+  SQLが順次発行されます。
+  init_sql/term_sqlでは、セミコロン区切りで複数のSQLを記述することができます。
+
+  接続先のデータベースは、スクリプト実行時に指定されたconfigに記述されているデータベース情報を指定します。
+
+  直前のコマンドの出力結果を１行ずつフェッチしながら、main_sqlに記述されたSQLを発行します。
+  SQLのパラメータには、行内に入っているフィールドの値をパラメータとして設定できるため、 
+  CSVで読み込んだデータを、データベースにインサートするなどの処理が簡単に記述できます。
+
 parameters:
   db_name:
     type: string
@@ -19,7 +30,9 @@ parameters:
 
   main_sql:
     type: string
-    comment: 実行するSQLを指定します
+    comment: |
+      実行するSQLを指定します。
+      {キー名}を指定すると、取得した行の中からテキストを取得し、SQLに埋め込むことができます。
     require: yes
     default: ""
 
@@ -39,5 +52,39 @@ parameters:
     require: no
     default: 0
 
-sample: |
-  サンプル
+sample:
+  - type: sql_execute
+    comment: CSVデータをSqlite3に格納する
+    debug: no
+    parameters:
+      db_name: default
+      batch_count: 100
+      init_sql: |
+        delete from okinawa
+      main_sql: |
+        insert into sample values(/*abc*/'', /*def*/'', /*ghi*/'')
+      term_sql: ""
+
+  - type: sql_execute
+    comment: CSVデータをPostgreSQLに格納する
+    debug: yes
+    parameters:
+      db_name: postgresql
+      batch_count: 100
+      init_sql: |
+        delete from okinawa
+      main_sql: |
+        insert into sample values(/*abc*/'', /*def*/'', /*ghi*/'')
+      term_sql: ""
+
+  - type: sql_execute
+    comment: CSVデータをMySQLに格納する
+    debug: no
+    parameters:
+      db_name: mysql
+      batch_count: 100
+      init_sql: |
+        delete from okinawa
+      # レコードのsqlカラムからSQLを取得する
+      main_sql: "{sql}"
+      term_sql: ""

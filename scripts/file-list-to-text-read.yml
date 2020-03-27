@@ -33,6 +33,7 @@ commands:
         - create_date
         - update_date
         # - md5
+      fetch_size: 1
 
   - type: file_list
     debug: no
@@ -58,6 +59,7 @@ commands:
         - create_date
         - update_date
         # - md5
+      fetch_size: 1
 
   - type: text_reader
     comment: テキストリード
@@ -73,7 +75,7 @@ commands:
         - is_empty
         - line
       untabify: yes
-      untabify_ext:
+      ext_tab_size:
         ".py": 4
         ".yml": 2
         ".java": 4

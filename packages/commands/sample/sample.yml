@@ -1,5 +1,8 @@
 name: Sample
-comment: サンプルコマンド
+comment: |
+  サンプルデータを返却するコマンドです。
+  データベースからデータを取得できない状態などに、想定するデータを定義します。
+
 parameters:
   data_type:
     type: enum
@@ -27,12 +30,22 @@ parameters:
         {"p1": "abc", "p2": 123, "p3": true},
         {"p1": "def", "p2": 456, "p3": false},
         {"p1": "ghi", "p2": 789, "p3": true},
-        {"p1": "abc", "p2": 123, "p3": true},
       ]
 
 sample:
   - type: sample
-    comment: サンプルデータを返却(Json)
+    comment: サンプルデータを返却(CSV)
+    debug: no
+    parameters:
+      data_type: json
+      data: |
+        p1,p2,p3,type
+        abc,123,true,json
+        def,456,false,yaml
+        ghi,789,true,csv
+
+  - type: sample
+    comment: サンプルデータを返却(JSON)
     debug: no
     parameters:
       data_type: json
@@ -43,3 +56,35 @@ sample:
           {"p1": "ghi", "p2": 789, "p3": true, "type": "json"},
           {"p1": "abc", "p2": 123, "p3": true, "type": "json"}
         ]
+
+  - type: sample
+    comment: サンプルデータを返却(YAML)
+    debug: no
+    parameters:
+      data_type: yaml
+      data: |
+        - p1: abc
+          p2: 123
+          p3: true
+        - p1: def
+          p2: 456
+          p3: false
+        - p1: ghi
+          p2: 789
+          p3: true
+
+  - type: sample
+    comment: サンプルデータを返却(Object)
+    debug: no
+    parameters:
+      data_type: object
+      data:
+        - p1: abc
+          p2: 123
+          p3: true
+        - p1: def
+          p2: 456
+          p3: false
+        - p1: ghi
+          p2: 789
+          p3: true

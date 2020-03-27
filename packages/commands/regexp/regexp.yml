@@ -65,5 +65,39 @@ parameters: # パラメータの仕様を記述します
       key2: default
       key3: default
 
-sample: |
-  サンプルコード
+sample:
+  - type: regexp
+    comment: 正規表現でマッチした結果を行に追加する
+    debug: no
+    parameters:
+      # 正規表現パターン
+      pattern: ^.+(?P<taketomi>竹富)(?P<machi>町)$
+      # 検索対象の文字列が入っているキーを指定
+      target_key: addr5
+      # アンマッチはスキップする
+      skip_unmatch: no
+      # 検索オプション
+      match_options:
+        - verbose
+        - multiline
+        - dotall
+        - ignorecase
+      # マッチした結果(True/False)を格納するキー
+      match_result_key: is_竹富町
+      # グループの抽出タイプ
+      # グループインデックスを指定して抽出
+      extract_type: index
+      # グループのパターン名をキーとして抽出
+      # extract_type: dict
+
+      # extract_type: indexの時の、グループインデックスと、キー名のマップ
+      group_key_map:
+        # グループ1の値を、taketomiに格納
+        taketomi: 1
+        # グループ2の値を、machiに格納
+        machi: 2
+      # 出力するキーとデフォルト
+      output_keys:
+        rule_name: 竹富町
+        taketomi: "<empty>"
+        machi: "<empty>"

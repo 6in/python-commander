@@ -1,5 +1,10 @@
 name: text_reader
-comment: テキストファイルを読み込みます
+comment: |
+  テキストファイルを1行ずつ読み込みます
+  読み込んだ行のタブ文字をスペースに展開する事もできます。
+  untabifyプロパティをyesに設定し、
+  拡張子毎のタブ文字サイズを定義するext_tab_sizeを設定してください。
+
 parameters:
   file_path_key:
     type: string
@@ -47,7 +52,7 @@ parameters:
     default: yes
     require: yes
 
-  untabify_ext:
+  ext_tab_size:
     type: object
     comment: |
       untabifyをYesにした時の設定。
@@ -57,7 +62,7 @@ parameters:
       ".yml": 2
       ".java": 4
       ".sql": 4
-    require: yes
+    require: no
 
   fetch_size:
     type: int

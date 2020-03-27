@@ -37,7 +37,7 @@ class TextReader(IteratorCommandBase):
         tab_size = 8
         if self.__params.untabify:
             (_, ext) = os.path.splitext(file_path)
-            exts = objdict(self.__params.untabify_ext)
+            exts = objdict(self.__params.ext_tab_size)
             if ext in exts:
                 tab_size = exts[ext]
 

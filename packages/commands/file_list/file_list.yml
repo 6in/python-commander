@@ -88,8 +88,31 @@ sample:
     comment: file_pathに入っているディレクトリを起点にフォルダを再帰的に検索する
     parameters:
       file_search_key: file_path
-      search_target: file
+      search_target: folder
       recursive: yes
+      white_list:
+        - ^.+\.py$
+        - ^.+\.yml$
+      black_list:
+        - ^.+\.pyc$
+      attributes:
+        - path
+        - is_file
+        - parent
+        - name
+        - ext_name
+        - length
+        - create_date
+        - update_date
+        - encoding
+        - md5
+      fetch_size: 0
+  - type: file_list
+    comment: file_pathに入っているディレクトリを起点にフォルダを再帰的に検索する
+    parameters:
+      file_search_key: file_path
+      search_target: file
+      recursive: no
       white_list:
         - ^.+\.py$
         - ^.+\.yml$

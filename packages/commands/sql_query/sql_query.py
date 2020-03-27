@@ -49,8 +49,9 @@ class SqlQuery(IteratorCommandBase):
                 param[key] = parent_row.get(key)
 
         # クエリを実行
+        sql = self.__params.sql.format(**parent_row.raw())
         rows = self.__dbService.execute_query(
-            self.__cursor, self.__params.sql, param)
+            self.__cursor, sql, param)
 
         return iter(rows)
 

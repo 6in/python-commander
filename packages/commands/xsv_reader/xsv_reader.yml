@@ -64,8 +64,16 @@ parameters:
     require: no
     default: 0
 
-sample: |
-  type: xsv_reader
-  comment: xsvファイルを読み込む
-  file_path_key: file_path
-  delimitor: ","
+sample:
+  - type: xsv_reader
+    comment: CSVデータが記述されているファイルパス(親)
+    debug: no
+    parameters:
+      file_path_key: file_path
+      encoding: utf-8
+      header: yes
+      delimiter: tab
+      doublequote: yes
+      escape_char: '\'
+      quotechar: '"'
+      fetch_size: 0

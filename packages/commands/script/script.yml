@@ -14,8 +14,29 @@ comment: |
   ```
   import pandas as pd
   ```
-  とインポートされた状態で、`pd`がスクリプト内で
-  利用できます。
+  とインポートされた状態で、`pd`がスクリプト内で利用できます。
+
+  スクリプトは、以下の仕様で記述してください。
+
+  ```
+  def proc(rows, args) :
+      '''
+      スクリプト処理を行います。
+
+      Parameters
+      ----------
+      rows: list
+          直前のコマンドが出力したデータ行が格納されます
+
+      args: object
+          コマンドのパラメータargsの値が引き渡されます
+
+      Returns
+      -------
+          rows: list
+      '''
+      return rows
+  ```
 
 parameters: # パラメータの仕様を記述します
   script:
@@ -39,13 +60,21 @@ parameters: # パラメータの仕様を記述します
       re: "re"
       pd: "pandas"
 
+  args:
+    type: object
+    comment: スクリプトに引き渡す引数をObject形式で指定します。
+    require: no
+    default: {}
+
 sample:
   - type: script
     comment: Pythonスクリプト処理
     debug: no
     parameters:
       script: |
-        def proc(rows):
+        def proc(rows, args):
+            # args プロパティを、objdict型に変換
+            args = objdict(args)
             newRows = []
             for row in rows:  # 辞書属性は、.属性名でアクセスできます。
                 row.name = 'abc'

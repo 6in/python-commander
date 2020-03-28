@@ -24,7 +24,8 @@ commands:
     debug: no
     parameters:
       script: |
-        def proc(rows):
+        def proc(rows,args):
+            args = objdict(args)
             reg = re.compile(r'竹富町')
             # pandasのテスト
             df = pd.DataFrame([ dict(row) for row in rows],index=range(len(rows)))
@@ -32,13 +33,14 @@ commands:
 
             # ループ処理
             for row in rows:  # 辞書属性は、.属性名でアクセスできます。
-                row.name = 'abc'
+                row.name = args.name
                 row.field = 'ghi'
                 row['is_竹富町'] = False
                 if reg.findall(row.addr5) : 
-                  row['is_竹富町'] = True
+                    row['is_竹富町'] = True
             return rows
-
+      args:
+        name: ABC
       modules:
         re: "re"
         pd: "pandas"

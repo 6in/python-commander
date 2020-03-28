@@ -35,7 +35,7 @@ class Script(CommandBase):
         self.__modules = modules
 
         script = self.__params.script
-        script = f'\n{script}\noutput_rows = proc(input_rows)'
+        script = f'\n{script}\noutput_rows = proc(input_rows, args)'
         logger.debug(script)
         self.__script = script
 
@@ -58,7 +58,8 @@ class Script(CommandBase):
 
         local = {
             'input_rows': rows,
-            'output_rows': []
+            'output_rows': [],
+            'args': self.__params.args
         }
 
         # スクリプトの実行を行う

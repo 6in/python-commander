@@ -1,0 +1,98 @@
+comment: サンプルスクリプト
+
+parameters:
+  search_path: "."
+
+commands:
+  - type: file_list
+    debug: no
+    comment: フォルダ一覧を取得
+    parameters:
+      file_search_key: search_path
+      search_target: folder
+      recursive: yes
+      white_list:
+        []
+        # - ^.+\.py$
+        # - ^.+\.yml$
+      black_list:
+        - ^__pycache__$
+        # - ^.+\.yml$
+      attributes:
+        - path
+        # - is_file
+        - name
+        # - ext
+        # - length
+        - create_date
+        - update_date
+        # - md5
+      fetch_size: 1
+
+  - type: file_list
+    debug: no
+    comment: フォルダ一覧で抽出したパスを開始位置にして、ファイル一覧を取得
+    parameters:
+      file_search_key: path
+      search_target: file # fileキーに入っている値を検索フォルダとする
+      recursive: no
+      white_list:
+        []
+        # - ^.+\.py$
+        # - ^.+\.yml$
+      black_list:
+        - ^.+\.pyc$
+        # - ^.+\.yml$
+      attributes:
+        - parent
+        # - path
+        - is_file
+        - name
+        - ext
+        - length
+        - create_date
+        - update_date
+        - md5
+        - encoding
+      fetch_size: 0
+
+  - type: script
+    debug: no
+    comment: フィルタ処理
+    parameters:
+      script: |
+        def proc(rows,args) :
+          for r in rows:
+            r.parent_name = r.parent.split('/')[-1]
+          return rows
+
+  - type: template_writer
+    comment: テンプレート出力
+    debug: no
+    parameters:
+      template: |
+        <ul>
+        <!-- {{ args.key1 }} / {{ args.key2 }} -->
+        {%- for row in rows %}
+          <li>{{ row.name }}</li>
+        {%- endfor %}
+        </ul>
+      args:
+        key1: abc
+        key2: def
+      output: "./data/tmp/{parent_name}.tmp"
+
+  - type: echo
+    comment: エコーサンプル１
+    debug: no
+    parameters:
+      target_keys: # 全て出力は[]を指定
+        []
+        # - path
+        # - is_file
+        # - parent
+        # - name
+        # - ext
+        # - length
+        # - create_date
+        # - update_date

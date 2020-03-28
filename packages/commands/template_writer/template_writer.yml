@@ -1,0 +1,39 @@
+name: template_writer
+comment: |
+  Jinja2を利用したテンプレート出力を行います。
+parameters: # パラメータの仕様を記述します
+  template:
+    type: string
+    comment: |
+      テンプレートを記述します
+    require: yes # パラメータが必須かどうかを指定(yes|no)
+    default: "default" # デフォルト値を設定
+
+  args:
+    type: object
+    comment: テンプレートに埋め込む静的なキー／値を指定します。
+    require: no
+    default: {}
+
+  output:
+    type: string
+    comment: 出力先ファイルパスを指定
+    require: no
+    default: "./data/output.txt"
+
+sample:
+  - type: template_writer
+    comment: テンプレート出力
+    debug: no
+    parameters:
+      template: |
+        <ul>
+        <!-- {{ args.key1 }} / {{ args.key2 }} -->
+        {%- for row in rows %}
+          <li>{{ row.name }}</li>
+        {%- endfor %}
+        </ul>
+      args:
+        key1: abc
+        key2: def
+      output: "./data/tmp/{parent_name}.tmp"
